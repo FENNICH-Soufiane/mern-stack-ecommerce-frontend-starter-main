@@ -1,5 +1,6 @@
-import { createAsyncThunk } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
+import baseURL from "../../../utils/baseURL";
 
 const initialState = {
    loading: false,
@@ -14,28 +15,25 @@ const initialState = {
    },
 };
 
-
-//register action
-export const registerUserAction = createAsyncThunk(
-   "users/register",
-   async (
-      { email, password, fullname },
-      { rejectWithValue, getState, dispatch }
-   ) => {
-      try {
-         //make the http request
-         const { data } = await axios.post(`${baseURL}/users/register`, {
-            email,
-            password,
-            fullname,
-         });
-         return data;
-      } catch (error) {
-         console.log(error);
-         return rejectWithValue(error?.response?.data);
-      }
+//login action
+export const loginUserAction = createAsyncThunk(
+   "users/login",
+   async ({ email, password }, { rejectWithValue, getState, dispatch }) => {
+     try {
+       //make the http request
+       const { data } = await axios.post(`${baseURL}/users/login`, {
+         email,
+         password,
+       });
+       //save the user into localstorage
+       localStorage.setItem("userInfo", JSON.stringify(data));
+       return data;
+     } catch (error) {
+       console.log(error);
+       return rejectWithValue(error?.response?.data);
+     }
    }
-);
+ );
 
 
 const usersSlice = createSlice({
@@ -57,3 +55,9 @@ const usersSlice = createSlice({
       });
    }
 });
+
+
+//generate reducer
+const usersReducer = usersSlice.reducer;
+
+export default usersReducer;
