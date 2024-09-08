@@ -68,23 +68,23 @@ export default function Navbar() {
                   ))} */}
                   {categoriesToDisplay?.length <= 0 ? (
                     <>
-                      <a
-                        href={`${baseURL}/products?category=clothing`}
+                      <Link
+                        to={`${baseURL}/products?category=clothing`}
                         className="flex items-center text-sm font-medium text-gray-700 hover:text-gray-800">
                         Clothing...
-                      </a>
+                      </Link>
 
-                      <a
-                        href="/"
+                      <Link
+                        to="/"
                         className="flex items-center text-sm font-medium text-gray-700 hover:text-gray-800">
                         Men
-                      </a>
+                      </Link>
 
-                      <a
-                        href="/"
+                      <Link
+                        to="/"
                         className="flex items-center text-sm font-medium text-gray-700 hover:text-gray-800">
                         Women
-                      </a>
+                      </Link>
                     </>
                   ) : (
                     categoriesToDisplay?.map((category) => {
