@@ -27,13 +27,13 @@ const Login = () => {
   };
 
   const { error, loading, userInfo } = useSelector((state) => state?.users?.userAuth);
-  console.log(error, loading, userInfo);
+  console.log(userInfo);
   //redirect
-  if (userAuth?.userInfo?.status) {
-    window.location.href = "/admin";
-  } else {
-    window.location.href = "/customer-profile"
-  }
+  // if (userInfo?.userFound?.isAdmin) {
+  //   window.location.href = "/admin";
+  // } else {
+  //   window.location.href = "/customer-profile"
+  // }
   
 
   return (
@@ -50,6 +50,8 @@ const Login = () => {
                 <p className="mb-10 font-semibold font-heading">
                   Happy to see you again
                 </p>
+                 {/* err */}
+                 {error && <ErrorMsg message={error?.message} />}
                 <form
                   className="flex flex-wrap -mx-4"
                   onSubmit={onSubmitHandler}>
@@ -83,9 +85,17 @@ const Login = () => {
                   </div>
 
                   <div className="w-full px-4">
-                    <button className="bg-blue-800 hover:bg-blue-900 text-white font-bold font-heading py-5 px-8 rounded-md uppercase">
+                    {loading ? (
+
+                      <button disabled className="bg-gray-800 hover:bg-blue-900 text-white font-bold font-heading py-5 px-8 rounded-md uppercase">
+                      Loading...
+                    </button>)
+                    : (
+                      <button className="bg-blue-800 hover:bg-blue-900 text-white font-bold font-heading py-5 px-8 rounded-md uppercase">
                       Login
                     </button>
+                    )
+                    }
                   </div>
                 </form>
               </div>
