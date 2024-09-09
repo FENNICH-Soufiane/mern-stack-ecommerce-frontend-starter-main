@@ -1,8 +1,12 @@
 import React, { useState } from "react";
 import ErrorComponent from "../../ErrorMsg/ErrorMsg";
+import { useDispatch } from "react-redux";
+import { registerUserAction } from "../../../redux/slices/users/userSlice";
 
 const RegisterForm = () => {
   //dispatch
+  const dispatch = useDispatch();
+
   const [formData, setFormData] = useState({
     fullname: "",
     email: "",
@@ -18,6 +22,7 @@ const RegisterForm = () => {
   //---onsubmit handler----
   const onSubmitHandler = (e) => {
     e.preventDefault();
+    dispatch(registerUserAction({ fullname, email, password }));
   };
   //select store data
 
