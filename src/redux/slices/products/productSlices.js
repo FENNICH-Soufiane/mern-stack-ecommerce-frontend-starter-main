@@ -30,7 +30,21 @@ export const createProductAction = createAsyncThunk(
           price,
           totalQty,
           files,
-        } = payload
+        } = payload;
+        const { data } = await axios.post(
+            `${baseURL}/products`,
+            {
+                name,
+                description,
+                category,
+                sizes,
+                brand,
+                colors,
+                price,
+                totalQty,
+                files,
+              }
+          );
       } catch (error) {}
     }
   );
