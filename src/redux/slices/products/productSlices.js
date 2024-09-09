@@ -18,7 +18,7 @@ const initialState = {
 export const createProductAction = createAsyncThunk(
    "product/create",
    async (payload, { rejectWithValue, getState, dispatch }) => {
-      console.log(payload);
+      console.log(getState);
       try {
          const {
             name,
@@ -31,6 +31,12 @@ export const createProductAction = createAsyncThunk(
             totalQty,
             files,
          } = payload;
+         const token = getState()?.users?.userAuth?.userInfo?.token;
+         const config = {
+            headers: {
+               Authorization: `Bearer ${token}`
+            },
+         };
          const { data } = await axios.post(
             `${baseURL}/products`,
             {
@@ -43,7 +49,7 @@ export const createProductAction = createAsyncThunk(
                price,
                totalQty,
                files,
-            }
+            }, config
          );
       } catch (error) { }
    }
