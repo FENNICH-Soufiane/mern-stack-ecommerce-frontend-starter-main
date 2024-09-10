@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+
 import { useDispatch, useSelector } from "react-redux";
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
@@ -14,11 +15,24 @@ const animatedComponents = makeAnimated();
 
 export default function AddProduct() {
 
+  // Sizes
+  const sizes = ["S", "M", "L", "XL", "XXL", "XXXL"];
+  const [sizeOption, setSizeOption] = useState([]);
+  const handleSizeChange = (sizes) => {
+    setSizeOption(sizes);
+  }
+
+  // converted sizes
+  const sizeOptionsCoverted = sizes?.map((size) => {
+    return {
+      value: size,
+      label: size
+    }
+  })
+
   const dispatch = useDispatch();
 
   let categories,
-    sizeOptionsCoverted,
-    handleSizeChange,
     colorOptionsCoverted,
     handleColorChangeOption,
     brands,
@@ -50,6 +64,7 @@ export default function AddProduct() {
     // dispatch
     dispatch(createProductAction(formData));
     console.log(formData);
+    console.log(sizeOption);
     
     //reset form data
     // setFormData({
