@@ -8,13 +8,15 @@ import ErrorMsg from "../../ErrorMsg/ErrorMsg";
 import LoadingComponent from "../../LoadingComp/LoadingComponent";
 import SuccessMsg from "../../SuccessMsg/SuccessMsg";
 import { createProductAction } from "../../../redux/slices/products/productSlices";
+import { fetchCategoriesAction } from "../../../redux/slices/categories/categoriesSlices";
 
 
 //animated components for react-select
 const animatedComponents = makeAnimated();
 
 export default function AddProduct() {
-
+  
+  const dispatch = useDispatch();
   // Sizes
   const sizes = ["S", "M", "L", "XL", "XXL", "XXXL"];
   const [sizeOption, setSizeOption] = useState([]);
@@ -28,16 +30,21 @@ export default function AddProduct() {
       value: size,
       label: size
     }
-  })
+  });
 
-  const dispatch = useDispatch();
+  // categories
+  useEffect(() => {
+    dispatch(fetchCategoriesAction());
+  }, [dispatch]);
 
-  let categories,
-    colorOptionsCoverted,
+  // select data from store
+  const {categories, loading, error} = useSelector((state) =>  state?.categories?.category);
+
+// console.log(categories, loading, error);
+
+  let colorOptionsCoverted,
     handleColorChangeOption,
     brands,
-    loading,
-    error,
     isAdded;
 
   //---form data---
