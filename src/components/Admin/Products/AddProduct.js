@@ -6,11 +6,16 @@ import makeAnimated from "react-select/animated";
 import ErrorMsg from "../../ErrorMsg/ErrorMsg";
 import LoadingComponent from "../../LoadingComp/LoadingComponent";
 import SuccessMsg from "../../SuccessMsg/SuccessMsg";
+import { createProductAction } from "../../../redux/slices/products/productSlices";
+
 
 //animated components for react-select
 const animatedComponents = makeAnimated();
 
 export default function AddProduct() {
+
+  const dispatch = useDispatch();
+
   let categories,
     sizeOptionsCoverted,
     handleSizeChange,
@@ -42,18 +47,22 @@ export default function AddProduct() {
   //onSubmit
   const handleOnSubmit = (e) => {
     e.preventDefault();
+    // dispatch
+    dispatch(createProductAction(formData));
+    console.log(formData);
+    
     //reset form data
-    setFormData({
-      name: "",
-      description: "",
-      category: "",
-      sizes: "",
-      brand: "",
-      colors: "",
-      images: "",
-      price: "",
-      totalQty: "",
-    });
+    // setFormData({
+    //   name: "",
+    //   description: "",
+    //   category: "",
+    //   sizes: "",
+    //   brand: "",
+    //   colors: "",
+    //   images: "",
+    //   price: "",
+    //   totalQty: "",
+    // });
   };
 
   return (

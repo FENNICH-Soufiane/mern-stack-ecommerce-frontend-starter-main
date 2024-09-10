@@ -51,7 +51,7 @@ export const createProductAction = createAsyncThunk(
                files,
             }, config
          );
-      } catch (error) { }
+      } catch (error) { return rejectWithValue(error?.response?.data); }
    }
 );
 
@@ -62,7 +62,7 @@ export const createProductAction = createAsyncThunk(
 
 
 //slice
-const productSlice = createSlice({
+const productSlices = createSlice({
    name: "products",
    initialState,
    extraReducers: (builder) => {
@@ -85,6 +85,6 @@ const productSlice = createSlice({
 })
 
 //generate the reducer
-const productReducer = productSlice.reducer;
+const productReducer = productSlices.reducer;
 
 export default productReducer;
