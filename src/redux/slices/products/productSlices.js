@@ -51,6 +51,7 @@ export const createProductAction = createAsyncThunk(
                files,
             }, config
          );
+         return data;
       } catch (error) { return rejectWithValue(error?.response?.data); }
    }
 );
