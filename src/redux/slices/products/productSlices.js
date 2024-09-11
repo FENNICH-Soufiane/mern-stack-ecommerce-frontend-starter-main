@@ -62,7 +62,7 @@ export const createProductAction = createAsyncThunk(
 
 //fetch product action
 export const fetchProductAction = createAsyncThunk(
-   "product/create",
+   "product/fetch all",
    async (payload, { rejectWithValue, getState, dispatch }) => {
       console.log(payload);
       try {
