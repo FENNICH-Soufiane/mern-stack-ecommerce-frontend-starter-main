@@ -48,7 +48,7 @@ export const createProductAction = createAsyncThunk(
          sizes.forEach((size) => {
             formData.append("sizes", size);
          });
-         
+
          const { data } = await axios.post(
             `${baseURL}/products`,
             formData,
@@ -60,7 +60,26 @@ export const createProductAction = createAsyncThunk(
 );
 
 
-
+//fetch product action
+export const fetchProductAction = createAsyncThunk(
+   "product/create",
+   async (payload, { rejectWithValue, getState, dispatch }) => {
+      console.log(payload);
+      try {
+         const token = getState()?.users?.userAuth?.userInfo?.token;
+         const config = {
+            headers: {
+               Authorization: `Bearer ${token}`,
+            },
+         };
+         const { data } = await axios.get(
+            `${baseURL}/products`,
+            config
+         );
+         return data;
+      } catch (error) { return rejectWithValue(error?.response?.data); }
+   }
+);
 
 
 
@@ -78,20 +97,35 @@ const productSlices = createSlice({
          state.loading = false;
          state.products = action.payload;
          state.isAdded = true;
-      });
-      // reset success
-      builder.addCase(resetSuccessAction.pending, (state, action) => {
-         state.isAdded = false
-      });
+      });    
       builder.addCase(createProductAction.rejected, (state, action) => {
          state.loading = false;
          state.products = null;
          state.isAdded = false;
          state.error = action.payload;
       });
+      // reset success
+      builder.addCase(resetSuccessAction.pending, (state, action) => {
+         state.isAdded = false
+      });
       // reset error
       builder.addCase(resetErrAction.pending, (state, action) => {
          state.error = null
+      });
+       //fetch all
+       builder.addCase(fetchProductAction.pending, (state) => {
+         state.loading = true;
+      });
+      builder.addCase(fetchProductAction.fulfilled, (state, action) => {
+         state.loading = false;
+         state.product = action.payload;
+         state.isAdded = true;
+      });    
+      builder.addCase(fetchProductAction.rejected, (state, action) => {
+         state.loading = false;
+         state.product = null;
+         state.isAdded = false;
+         state.error = action.payload;
       });
    }
 });
