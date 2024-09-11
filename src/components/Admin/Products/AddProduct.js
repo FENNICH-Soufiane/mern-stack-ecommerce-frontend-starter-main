@@ -9,13 +9,16 @@ import LoadingComponent from "../../LoadingComp/LoadingComponent";
 import SuccessMsg from "../../SuccessMsg/SuccessMsg";
 import { createProductAction } from "../../../redux/slices/products/productSlices";
 import { fetchCategoriesAction } from "../../../redux/slices/categories/categoriesSlices";
+import { fetchBrandsAction } from "../../../redux/slices/categories/brandsSlices";
+import { fetchColorsAction } from "../../../redux/slices/categories/colorsSlices";
+
 
 
 //animated components for react-select
 const animatedComponents = makeAnimated();
 
 export default function AddProduct() {
-  
+
   const dispatch = useDispatch();
   // Sizes
   const sizes = ["S", "M", "L", "XL", "XXL", "XXXL"];
@@ -38,14 +41,37 @@ export default function AddProduct() {
   }, [dispatch]);
 
   // select data from store
-  const {categories, loading, error} = useSelector((state) =>  state?.categories?.category);
+  const { categories, loading, error } = useSelector((state) => state?.categories?.categories);
 
-// console.log(categories, loading, error);
+  // brands
+  useEffect(() => {
+    dispatch(fetchBrandsAction());
+  }, [dispatch]);
+  // select data from store
+  const { brands: { brands } } = useSelector((state) => state?.brands);
 
-  let colorOptionsCoverted,
-    handleColorChangeOption,
-    brands,
-    isAdded;
+  // colors
+  useEffect(() => {
+    dispatch(fetchColorsAction());
+  }, [dispatch]);
+  
+  // select data from store
+  const { colors: {colors} } = useSelector((state) => state?.colors);
+  
+  const [colorsOption, setColorsOption] = useState([]);
+  const handleColorChangeOption = (colors) => {
+    setColorsOption(colors);
+  }
+  
+  //converted colors
+  const colorOptionsCoverted = colors?.map((color) => {
+    return {
+      value: color?.name,
+      label: color?.name,
+    };
+  });
+
+  let isAdded;
 
   //---form data---
   const [formData, setFormData] = useState({
@@ -72,7 +98,7 @@ export default function AddProduct() {
     dispatch(createProductAction(formData));
     console.log(formData);
     console.log(sizeOption);
-    
+
     //reset form data
     // setFormData({
     //   name: "",

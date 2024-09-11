@@ -4,8 +4,8 @@ const { createAsyncThunk, createSlice } = require("@reduxjs/toolkit");
 
 //initalsState
 const initialState = {
-   categories: [],
-   category: {},
+   colors: [],
+   color: {},
    loading: false,
    error: null,
    isAdded: false,
@@ -14,9 +14,9 @@ const initialState = {
 };
 
 
-//create category action
-export const createCategoryAction = createAsyncThunk(
-   "category/create",
+//create color action
+export const createColorAction = createAsyncThunk(
+   "color/create",
    async (payload, { rejectWithValue, getState, dispatch }) => {
       console.log(getState);
       try {
@@ -27,7 +27,7 @@ export const createCategoryAction = createAsyncThunk(
                Authorization: `Bearer ${token}`
             },
          };
-         const { data } = await axios.post(`${baseURL}/categories`, { name }, config);
+         const { data } = await axios.post(`${baseURL}/colors`, { name }, config);
          return data
       } catch (error) {
          return rejectWithValue(error?.response?.data);
@@ -37,13 +37,13 @@ export const createCategoryAction = createAsyncThunk(
 
 
 
-//create product action
-export const fetchCategoriesAction = createAsyncThunk(
-   "category/fetch All",
+//create color action
+export const fetchColorsAction = createAsyncThunk(
+   "color/fetch All",
    async (payload, { rejectWithValue, getState, dispatch }) => {
       console.log(getState);
       try {
-         const { data } = await axios.get(`${baseURL}/categories`);
+         const { data } = await axios.get(`${baseURL}/colors`);
          return data
       } catch (error) {
          return rejectWithValue(error?.response?.data);
@@ -53,37 +53,37 @@ export const fetchCategoriesAction = createAsyncThunk(
 
 
 //slice
-const categorySlices = createSlice({
-   name: "categories",
+const colorsSlices = createSlice({
+   name: "colors",
    initialState,
    extraReducers: (builder) => {
       //create
-      builder.addCase(createCategoryAction.pending, (state) => {
+      builder.addCase(createColorAction.pending, (state) => {
          state.loading = true;
       });
-      builder.addCase(createCategoryAction.fulfilled, (state, action) => {
+      builder.addCase(createColorAction.fulfilled, (state, action) => {
          state.loading = false;
-         state.category = action.payload;
+         state.color = action.payload;
          state.isAdded = true;
       });
-      builder.addCase(createCategoryAction.rejected, (state, action) => {
+      builder.addCase(createColorAction.rejected, (state, action) => {
          state.loading = false;
-         state.category = null;
+         state.color = null;
          state.isAdded = false;
          state.error = action.payload;
       });
       //fetch All
-      builder.addCase(fetchCategoriesAction.pending, (state) => {
+      builder.addCase(fetchColorsAction.pending, (state) => {
          state.loading = true;
       });
-      builder.addCase(fetchCategoriesAction.fulfilled, (state, action) => {
+      builder.addCase(fetchColorsAction.fulfilled, (state, action) => {
          state.loading = false;
-         state.categories = action.payload;
+         state.colors = action.payload;
          state.isAdded = true;
       });
-      builder.addCase(fetchCategoriesAction.rejected, (state, action) => {
+      builder.addCase(fetchColorsAction.rejected, (state, action) => {
          state.loading = false;
-         state.categories = null;
+         state.colors = null;
          state.isAdded = false;
          state.error = action.payload;
       });
@@ -91,6 +91,6 @@ const categorySlices = createSlice({
 })
 
 //generate the reducer
-const categoryReducer = categorySlices.reducer;
+const colorsReducer = colorsSlices.reducer;
 
-export default categoryReducer;
+export default colorsReducer;
