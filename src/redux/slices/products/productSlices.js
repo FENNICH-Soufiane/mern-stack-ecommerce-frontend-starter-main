@@ -1,5 +1,6 @@
 import axios from "axios";
 import baseURL from "../../../utils/baseURL";
+import { resetErrAction, resetSuccessAction } from "../users/globalActions/globalActions";
 const { createAsyncThunk, createSlice } = require("@reduxjs/toolkit");
 
 //initalsState
@@ -75,17 +76,25 @@ const productSlices = createSlice({
       });
       builder.addCase(createProductAction.fulfilled, (state, action) => {
          state.loading = false;
-         state.product = action.payload;
+         state.products = action.payload;
          state.isAdded = true;
+      });
+      // reset success
+      builder.addCase(resetSuccessAction.pending, (state, action) => {
+         state.isAdded = false
       });
       builder.addCase(createProductAction.rejected, (state, action) => {
          state.loading = false;
-         state.product = null;
+         state.products = null;
          state.isAdded = false;
          state.error = action.payload;
       });
+      // reset error
+      builder.addCase(resetErrAction.pending, (state, action) => {
+         state.error = null
+      });
    }
-})
+});
 
 //generate the reducer
 const productReducer = productSlices.reducer;

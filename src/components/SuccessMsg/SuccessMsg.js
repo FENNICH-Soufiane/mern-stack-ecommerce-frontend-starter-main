@@ -5,6 +5,7 @@ const SuccessMsg = ({ message }) => {
     icon: "success",
     title: "Good job!",
     text: message,
+    confirmButtonColor: "red"
   });
 };
 
