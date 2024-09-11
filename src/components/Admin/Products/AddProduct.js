@@ -41,14 +41,14 @@ export default function AddProduct() {
   }, [dispatch]);
 
   // select data from store
-  const { categories, loading, error } = useSelector((state) => state?.categories?.categories);
+  const { categories, loading, error } = useSelector((state) => state?.categories?.categories || {});
 
   // brands
   useEffect(() => {
     dispatch(fetchBrandsAction());
   }, [dispatch]);
   // select data from store
-  const { brands: { brands } } = useSelector((state) => state?.brands);
+  const { brands: { brands } } = useSelector((state) => state?.brands || {});
 
   // colors
   useEffect(() => {
@@ -56,7 +56,7 @@ export default function AddProduct() {
   }, [dispatch]);
 
   // select data from store
-  const { colors: { colors } } = useSelector((state) => state?.colors);
+  const { colors: { colors } } = useSelector((state) => state?.colors || {});
 
   const [colorsOption, setColorsOption] = useState([]);
   const handleColorChangeOption = (colors) => {
@@ -107,8 +107,8 @@ export default function AddProduct() {
     // dispatch
     dispatch(createProductAction({
       ...formData,
-      images: files,
-      colors: colorsOption?.map((color) => color.label),
+      files,
+      colors: colorsOption?.map((color) => color?.label),
       sizes: sizeOption?.map((size) => size?.label),
     }));
 
