@@ -77,8 +77,21 @@ export default function AddProduct() {
   // file handle change
   const fileHandleChange = (event) => {
     const newFiles = Array.from(event.target.files);
+    console.log(newFiles);
+    
+    //validation
+    const newErrs = [];
+    newFiles.forEach((file) => {
+      if (file?.size > 1000000) {
+        newErrs.push(`${file?.name} is too large`);
+      }
+      if (!file?.type?.startsWith("image/")) {
+        newErrs.push(`${file?.name} is not an image`);
+      }
+    });
     setFiles(newFiles);
-    console.log(files);
+    setFilesErros(newErrs)
+    console.log(newFiles);
   }
 
   //---form data---
@@ -103,6 +116,8 @@ export default function AddProduct() {
   //onSubmit
   const handleOnSubmit = (e) => {
     e.preventDefault();
+    console.log(fileErrors);
+    
     // dispatch
     dispatch(createProductAction({
       ...formData,
@@ -129,6 +144,7 @@ export default function AddProduct() {
     <>
       {error && <ErrorMsg message={error?.message} />}
       {isAdded && <SuccessMsg message="Product Added Successfully" />}
+      {fileErrors.length >0 && <ErrorMsg message="file too large or upload an image" />}
       <div className="flex min-h-full flex-col justify-center py-12 sm:px-6 lg:px-8">
         <div className="sm:mx-auto sm:w-full sm:max-w-md">
           <h2 className="mt-6 text-center text-3xl font-bold tracking-tight text-gray-900">
@@ -336,6 +352,7 @@ export default function AddProduct() {
                   <LoadingComponent />
                 ) : (
                   <button
+                  disabled={fileErrors.length >0}
                     type="submit"
                     className="flex w-full justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
                     Add Product
