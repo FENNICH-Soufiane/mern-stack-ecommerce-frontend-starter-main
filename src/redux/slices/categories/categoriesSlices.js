@@ -18,7 +18,7 @@ const initialState = {
 export const createCategoryAction = createAsyncThunk(
    "category/create",
    async (payload, { rejectWithValue, getState, dispatch }) => {
-      console.log(getState);
+      // console.log(getState);
       try {
          const { name } = payload;
          const token = getState()?.users?.userAuth?.userInfo?.token;
@@ -41,7 +41,7 @@ export const createCategoryAction = createAsyncThunk(
 export const fetchCategoriesAction = createAsyncThunk(
    "category/fetch All",
    async (payload, { rejectWithValue, getState, dispatch }) => {
-      console.log(getState);
+      // console.log(getState);
       try {
          const { data } = await axios.get(`${baseURL}/categories`);
          return data

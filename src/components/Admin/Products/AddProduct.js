@@ -54,15 +54,15 @@ export default function AddProduct() {
   useEffect(() => {
     dispatch(fetchColorsAction());
   }, [dispatch]);
-  
+
   // select data from store
-  const { colors: {colors} } = useSelector((state) => state?.colors);
-  
+  const { colors: { colors } } = useSelector((state) => state?.colors);
+
   const [colorsOption, setColorsOption] = useState([]);
   const handleColorChangeOption = (colors) => {
     setColorsOption(colors);
   }
-  
+
   //converted colors
   const colorOptionsCoverted = colors?.map((color) => {
     return {
@@ -105,9 +105,12 @@ export default function AddProduct() {
   const handleOnSubmit = (e) => {
     e.preventDefault();
     // dispatch
-    dispatch(createProductAction(formData));
-    console.log(formData);
-    console.log(files);
+    dispatch(createProductAction({
+      ...formData,
+      images: files,
+      colors: colorsOption?.map((color) => color.label),
+      sizes: sizeOption?.map((size) => size?.label),
+    }));
 
     //reset form data
     // setFormData({

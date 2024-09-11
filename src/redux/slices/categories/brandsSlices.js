@@ -18,7 +18,7 @@ const initialState = {
 export const createBrandAction = createAsyncThunk(
    "brand/create",
    async (payload, { rejectWithValue, getState, dispatch }) => {
-      console.log(getState);
+      // console.log(getState);
       try {
          const { name } = payload;
          const token = getState()?.users?.userAuth?.userInfo?.token;
@@ -41,7 +41,7 @@ export const createBrandAction = createAsyncThunk(
 export const fetchBrandsAction = createAsyncThunk(
    "brands/fetch All",
    async (payload, { rejectWithValue, getState, dispatch }) => {
-      console.log(getState);
+      // console.log(getState);
       try {
          const { data } = await axios.get(`${baseURL}/brands`);
          return data

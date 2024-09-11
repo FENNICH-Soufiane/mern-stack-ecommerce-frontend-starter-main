@@ -18,7 +18,7 @@ const initialState = {
 export const createColorAction = createAsyncThunk(
    "color/create",
    async (payload, { rejectWithValue, getState, dispatch }) => {
-      console.log(getState);
+      // console.log(getState);
       try {
          const { name } = payload;
          const token = getState()?.users?.userAuth?.userInfo?.token;
@@ -41,7 +41,7 @@ export const createColorAction = createAsyncThunk(
 export const fetchColorsAction = createAsyncThunk(
    "color/fetch All",
    async (payload, { rejectWithValue, getState, dispatch }) => {
-      console.log(getState);
+      // console.log(getState);
       try {
          const { data } = await axios.get(`${baseURL}/colors`);
          return data
