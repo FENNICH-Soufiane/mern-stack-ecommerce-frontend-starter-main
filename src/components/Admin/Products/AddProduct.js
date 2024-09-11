@@ -71,6 +71,16 @@ export default function AddProduct() {
     };
   });
 
+  // files
+  const [files, setFiles] = useState([]);
+  const [fileErrors, setFilesErros] = useState([]);
+  // file handle change
+  const fileHandleChange = (event) => {
+    const newFiles = Array.from(event.target.files);
+    setFiles(newFiles);
+    console.log(files);
+  }
+
   let isAdded;
 
   //---form data---
@@ -97,7 +107,7 @@ export default function AddProduct() {
     // dispatch
     dispatch(createProductAction(formData));
     console.log(formData);
-    console.log(sizeOption);
+    console.log(files);
 
     //reset form data
     // setFormData({
@@ -258,8 +268,9 @@ export default function AddProduct() {
                           <input
                             name="images"
                             value={formData.images}
-                            onChange={handleOnChange}
+                            onChange={fileHandleChange}
                             type="file"
+                            multiple
                           />
                         </label>
                       </div>
