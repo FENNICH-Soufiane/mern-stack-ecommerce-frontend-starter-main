@@ -91,7 +91,6 @@ export default function AddProduct() {
     sizes: "",
     brand: "",
     colors: "",
-    images: "",
     price: "",
     totalQty: "",
   });
@@ -144,7 +143,7 @@ export default function AddProduct() {
 
         <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
           <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
-            <form className="space-y-6" onSubmit={handleOnSubmit}>
+            <form className="space-y-6" onSubmit={handleOnSubmit} enctype="multipart/form-data" >
               <div>
                 <label className="block text-sm font-medium text-gray-700">
                   Product Name
@@ -269,9 +268,8 @@ export default function AddProduct() {
                           className="relative cursor-pointer rounded-md bg-white font-medium text-indigo-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-500 focus-within:ring-offset-2 hover:text-indigo-500">
                           <span>Upload files</span>
                           <input
-                            name="images"
-                            value={formData.images}
                             onChange={fileHandleChange}
+                            name="files"
                             type="file"
                             multiple
                           />
@@ -351,3 +349,6 @@ export default function AddProduct() {
     </>
   );
 }
+
+
+
