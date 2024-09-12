@@ -22,7 +22,7 @@ export default function CategoryToAdd() {
 
 
   // files
-  const [file, setFile] = useState([]);
+  const [file, setFile] = useState(null);
   const [fileErrors, setFileErros] = useState([]);
 
   const fileHandleChange = (event) => {
