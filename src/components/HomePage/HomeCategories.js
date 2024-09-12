@@ -8,11 +8,11 @@ const HomeCategories = () => {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(fetchCategoriesAction());
-  }, [dispatch])
+  }, [dispatch]);
 
   // get data from store
-  const {categories: {categories}} = useSelector((state) => state?.categories)
-  const categoriesToShow = categories?.slice(0, 5)
+  const {categories: {categories}} = useSelector((state) => state?.categories);
+  const categoriesToShow = categories?.slice(0, 5);
 
 
   return (
