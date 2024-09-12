@@ -3,8 +3,15 @@ import { Link } from "react-router-dom";
 import ErrorComponent from "../../ErrorMsg/ErrorMsg";
 import SuccessMsg from "../../SuccessMsg/SuccessMsg";
 import LoadingComponent from "../../LoadingComp/LoadingComponent";
+import { createCategoryAction } from "../../../redux/slices/categories/categoriesSlices";
+import { useDispatch } from "react-redux";
+
+
+
 
 export default function CategoryToAdd() {
+  const dispatch = useDispatch();
+
   const [formData, setFormData] = useState({
     name: "",
   });
@@ -16,15 +23,15 @@ export default function CategoryToAdd() {
 
 
   // files
-  const [files, setFiles] = useState([]);
-  const [fileErrors, setFilesErros] = useState([]);
+  const [file, setFile] = useState([]);
+  const [fileErrors, setFileErros] = useState([]);
   const fileHandleChange = (event) => {
-    const newFiles = Array.from(event.target.files);
-    console.log(newFiles);
+    const newFile = Array.from(event.target.file);
+    console.log(newFile);
 
     //validation
     const newErrs = [];
-    newFiles.forEach((file) => {
+    newFile.forEach((file) => {
       if (file?.size > 1000000) {
         newErrs.push(`${file?.name} is too large`);
       }
@@ -32,13 +39,17 @@ export default function CategoryToAdd() {
         newErrs.push(`${file?.name} is not an image`);
       }
     });
-    setFiles(newFiles);
-    setFilesErros(newErrs)
-    console.log(newFiles);
+    setFile(newFile);
+    setFileErros(newErrs)
+    console.log(newFile);
   }
   //onSubmit
   const handleOnSubmit = (e) => {
     e.preventDefault();
+    dispatch(createCategoryAction({
+      name: formData?.name, 
+      image: file
+    }));
   };
   return (
     <>
@@ -107,9 +118,8 @@ export default function CategoryToAdd() {
                           <span>Upload file</span>
                           <input
                             onChange={fileHandleChange}
-                            name="files"
+                            name="file"
                             type="file"
-                            multiple
                           />
                         </label>
                       </div>
