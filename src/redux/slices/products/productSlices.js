@@ -61,7 +61,7 @@ export const createProductAction = createAsyncThunk(
 
 
 //fetch product action
-export const fetchProductAction = createAsyncThunk(
+export const fetchProductsAction = createAsyncThunk(
    "product/fetch all",
    async (payload, { rejectWithValue, getState, dispatch }) => {
       console.log(payload);
@@ -74,6 +74,28 @@ export const fetchProductAction = createAsyncThunk(
          };
          const { data } = await axios.get(
             `${baseURL}/products`,
+            config
+         );
+         return data;
+      } catch (error) { return rejectWithValue(error?.response?.data); }
+   }
+);
+
+
+//fetch product details action
+export const fetchProductAction = createAsyncThunk(
+   "product/details",
+   async (productId, { rejectWithValue, getState, dispatch }) => {
+      console.log(productId);
+      try {
+         const token = getState()?.users?.userAuth?.userInfo?.token;
+         const config = {
+            headers: {
+               Authorization: `Bearer ${token}`,
+            },
+         };
+         const { data } = await axios.get(
+            `${baseURL}/products/${productId}`,
             config
          );
          return data;
@@ -113,17 +135,32 @@ const productSlices = createSlice({
          state.error = null
       });
        //fetch all
-       builder.addCase(fetchProductAction.pending, (state) => {
+       builder.addCase(fetchProductsAction.pending, (state) => {
          state.loading = true;
       });
-      builder.addCase(fetchProductAction.fulfilled, (state, action) => {
+      builder.addCase(fetchProductsAction.fulfilled, (state, action) => {
          state.loading = false;
          state.products = action.payload;
          state.isAdded = true;
       });    
-      builder.addCase(fetchProductAction.rejected, (state, action) => {
+      builder.addCase(fetchProductsAction.rejected, (state, action) => {
          state.loading = false;
          state.products = null;
+         state.isAdded = false;
+         state.error = action.payload;
+      });
+      // 
+      builder.addCase(fetchProductAction.pending, (state) => {
+         state.loading = true;
+      });
+      builder.addCase(fetchProductAction.fulfilled, (state, action) => {
+         state.loading = false;
+         state.product = action.payload;
+         state.isAdded = true;
+      });    
+      builder.addCase(fetchProductAction.rejected, (state, action) => {
+         state.loading = false;
+         state.product = null;
          state.isAdded = false;
          state.error = action.payload;
       });

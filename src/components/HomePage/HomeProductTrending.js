@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { fetchProductAction } from "../../redux/slices/products/productSlices";
+import { fetchProductsAction } from "../../redux/slices/products/productSlices";
 
 
 const HomeProductTrending = () => {
@@ -10,7 +10,7 @@ const HomeProductTrending = () => {
   // dispatch
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(fetchProductAction());
+    dispatch(fetchProductsAction());
   }, [dispatch])
   // get data from store
   const {products: {products}, error, loading} = useSelector((state) => state?.products);
@@ -56,6 +56,9 @@ const HomeProductTrending = () => {
                 <p className="mt-1 text-sm text-gray-500">{product.decription}</p>
                 <p className="mt-1 text-sm font-medium text-gray-900">
                   $ {product.price}.00
+                </p>
+                <p className="mt-1 text-sm text-gray-500">
+                  {product.description}
                 </p>
               </Link>
             ))}
