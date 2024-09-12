@@ -4,7 +4,7 @@ import ErrorComponent from "../../ErrorMsg/ErrorMsg";
 import SuccessMsg from "../../SuccessMsg/SuccessMsg";
 import LoadingComponent from "../../LoadingComp/LoadingComponent";
 import { createCategoryAction } from "../../../redux/slices/categories/categoriesSlices";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 
 
@@ -19,41 +19,43 @@ export default function CategoryToAdd() {
   const handleOnChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
-  let { error, isAdded, loading } = {};
 
 
   // files
   const [file, setFile] = useState([]);
   const [fileErrors, setFileErros] = useState([]);
+
   const fileHandleChange = (event) => {
-    const newFile = Array.from(event.target.file);
-    console.log(newFile);
+    const newFile = event.target.files[0];
+    // console.log(newFile);
 
     //validation
-    const newErrs = [];
-    newFile.forEach((file) => {
-      if (file?.size > 1000000) {
-        newErrs.push(`${file?.name} is too large`);
-      }
-      if (!file?.type?.startsWith("image/")) {
-        newErrs.push(`${file?.name} is not an image`);
-      }
-    });
+    if (file?.size > 1000000) {
+      setFileErros(`${newFile?.name} is too large`);
+    }
+    if (!file?.type?.startsWith("image/")) {
+      setFileErros(`${newFile?.name} is not an image`);
+    }
+
     setFile(newFile);
-    setFileErros(newErrs)
-    console.log(newFile);
+    // console.log(newFile);
   }
+
+  // get data from store
+  const { loading, error, isAdded } = useSelector((state) => state?.categories)
+
   //onSubmit
   const handleOnSubmit = (e) => {
     e.preventDefault();
     dispatch(createCategoryAction({
-      name: formData?.name, 
+      name: formData?.name,
       image: file
     }));
   };
   return (
     <>
       {error && <ErrorComponent message={error?.message} />}
+      {fileErrors.length > 0 && <ErrorComponent message={fileErrors} />}
       {isAdded && <SuccessMsg message="Category added successfully" />}
       <div className="flex min-h-full flex-col justify-center py-12 sm:px-6 lg:px-8">
         <div className="sm:mx-auto sm:w-full sm:max-w-md">
