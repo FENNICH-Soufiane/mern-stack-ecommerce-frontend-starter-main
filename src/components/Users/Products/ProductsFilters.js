@@ -21,6 +21,9 @@ import { fetchProductsAction } from "../../../redux/slices/products/productSlice
 import baseURL from "../../../utils/baseURL";
 import { fetchBrandsAction } from "../../../redux/slices/categories/brandsSlices";
 import { fetchColorsAction } from "../../../redux/slices/categories/colorsSlices";
+import ErrorMsg from "../../ErrorMsg/ErrorMsg";
+import LoadingComponent from "../../LoadingComp/LoadingComponent";
+import NoDataFound from "../../NoDataFound/NoDataFound";
 
 const sortOptions = [
   { name: "Most Popular", href: "#", current: true },
@@ -108,7 +111,7 @@ export default function ProductsFilters() {
     dispatch(fetchProductsAction({ url: productUrl }));
   }, [dispatch, category, brand, size, price, color]);
   // get data from store
-  const { products: { products } } = useSelector((state) => state?.products);
+  const { products: { products }, loading, error } = useSelector((state) => state?.products);
 
   // fetch all colors
   useEffect(() => {
@@ -733,13 +736,7 @@ export default function ProductsFilters() {
               </form>
 
               {/* Product grid */}
-              {productsLoading ? (
-                <h2 className="text-xl">Loading...</h2>
-              ) : productsError ? (
-                <h2 className="text-red-500">{productsError}</h2>
-              ) : (
-                <Products products={products} />
-              )}
+              {loading ? <LoadingComponent /> : error ? <ErrorMsg message={error?.message} /> : products?.length < 0 ? NoDataFound : <Products products={products} />}
             </div>
           </section>
         </main>
