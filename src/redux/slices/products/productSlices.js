@@ -62,9 +62,9 @@ export const createProductAction = createAsyncThunk(
 
 //fetch product action
 export const fetchProductsAction = createAsyncThunk(
-   "product/fetch all",
-   async (payload, { rejectWithValue, getState, dispatch }) => {
-      console.log(payload);
+   "product/list",
+   async ({url}, { rejectWithValue, getState, dispatch }) => {
+      console.log(url);
       try {
          const token = getState()?.users?.userAuth?.userInfo?.token;
          const config = {
@@ -73,7 +73,7 @@ export const fetchProductsAction = createAsyncThunk(
             },
          };
          const { data } = await axios.get(
-            `${baseURL}/products`,
+            `${url}`,
             config
          );
          return data;

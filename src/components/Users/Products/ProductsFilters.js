@@ -15,6 +15,10 @@ import {
   PlusIcon,
 } from "@heroicons/react/20/solid";
 import Products from "./Products";
+import { useSearchParams } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { fetchProductsAction } from "../../../redux/slices/products/productSlices";
+import baseURL from "../../../utils/baseURL";
 
 const sortOptions = [
   { name: "Most Popular", href: "#", current: true },
@@ -56,29 +60,41 @@ function classNames(...classes) {
 }
 
 const sizeCategories = [
-  "XXS",
-  "XS",
   "S",
   "M",
   "L",
   "XL",
   "XXL",
   "XXXL",
-  "XXXXL",
 ];
 
 export default function ProductsFilters() {
+  // dispatch
+  const dispatch = useDispatch();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
+
+  // get query string
+  const [params, setParams] = useSearchParams();
+  const category = params.get("category");
+  console.log(params);
+  
+  // filters
+  const [color, setColor] = useState("");
+  const [price, setPrice] = useState("");
+  const [brand, setBrand] = useState("");
+  const [size, setSize] = useState("");
+  // build up url
+  let productUrl = `${baseURL}/products`;
+  // fetch all products
+  useEffect(() => {
+    dispatch(fetchProductsAction({url: productUrl}));
+  }, []);
 
   let colorsLoading;
   let colorsError;
   let colors;
-  let setPrice;
   let brands;
-  let setSize;
-  let setColor;
-  let setBrand;
   let productsLoading;
   let productsError;
   let products;
