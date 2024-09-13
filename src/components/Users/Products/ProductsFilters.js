@@ -88,7 +88,7 @@ export default function ProductsFilters() {
   const [price, setPrice] = useState("");
   const [brand, setBrand] = useState("");
   const [size, setSize] = useState("");
-  console.log(price);
+  console.log(color);
 
   // construire l'url
   let productUrl = `${baseURL}/products`;
@@ -98,6 +98,7 @@ export default function ProductsFilters() {
   if (brand) queryParams.push(`brand=${brand}`);
   if (size) queryParams.push(`size=${size}`);
   if (price) queryParams.push(`price=${price}`);
+  if (color) queryParams.push(`color=${color?.name}`);
 
   if (queryParams.length) {
     productUrl = `${baseURL}/products?${queryParams.join("&")}`;
@@ -105,21 +106,21 @@ export default function ProductsFilters() {
   // fetch all products
   useEffect(() => {
     dispatch(fetchProductsAction({ url: productUrl }));
-  }, [dispatch, category, brand, size, price]);
+  }, [dispatch, category, brand, size, price, color]);
   // get data from store
   const { products: { products } } = useSelector((state) => state?.products);
 
   // fetch all colors
   useEffect(() => {
     dispatch(fetchColorsAction({ url: productUrl }));
-  }, [dispatch, category, brand, size, price]);
+  }, [dispatch, category, brand, size, price, color]);
   // get data from store
   const { colors: { colors } } = useSelector((state) => state?.colors);
 
   // fetch all brands
   useEffect(() => {
     dispatch(fetchBrandsAction({ url: productUrl }));
-  }, [dispatch, category, brand, size, price]);
+  }, [dispatch, category, brand, size, price, color]);
   // get product from store
   const { brands: { brands } } = useSelector((state) => state?.brands);
 
