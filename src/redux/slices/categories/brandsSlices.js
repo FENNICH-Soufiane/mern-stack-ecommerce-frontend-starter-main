@@ -87,7 +87,7 @@ const brandsSlices = createSlice({
          state.isAdded = false;
          state.error = action.payload;
       });
-       // Reset success
+      // Reset success
        builder.addCase(resetSuccessAction.pending, (state) => {
          state.error = null;
       });

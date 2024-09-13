@@ -23,8 +23,12 @@ export default function AddBrand() {
   const handleOnSubmit = (e) => {
     e.preventDefault();
     dispatch(createBrandAction(formData?.name));
+    // resset form
+    setFormData({
+      name: ""
+    })
   };
-  const { loading, error, isAdded } = useSelector((state) => state?.brands)
+  const { loading, error, isAdded } = useSelector((state) => state?.brands);
   return (
     <>
       {isAdded && <SuccessMsg message="Brand Created Successfully" />}
