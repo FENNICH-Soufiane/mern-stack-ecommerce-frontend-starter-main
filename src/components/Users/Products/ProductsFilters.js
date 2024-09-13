@@ -88,7 +88,7 @@ export default function ProductsFilters() {
   const [price, setPrice] = useState("");
   const [brand, setBrand] = useState("");
   const [size, setSize] = useState("");
-  console.log(brand);
+  console.log(price);
 
   // construire l'url
   let productUrl = `${baseURL}/products`;
@@ -96,6 +96,8 @@ export default function ProductsFilters() {
   const queryParams = [];
   if (category) queryParams.push(`category=${category}`);
   if (brand) queryParams.push(`brand=${brand}`);
+  if (size) queryParams.push(`size=${size}`);
+  if (price) queryParams.push(`price=${price}`);
 
   if (queryParams.length) {
     productUrl = `${baseURL}/products?${queryParams.join("&")}`;
@@ -103,21 +105,21 @@ export default function ProductsFilters() {
   // fetch all products
   useEffect(() => {
     dispatch(fetchProductsAction({ url: productUrl }));
-  }, [dispatch, category, brand]);
+  }, [dispatch, category, brand, size, price]);
   // get data from store
   const { products: { products } } = useSelector((state) => state?.products);
 
   // fetch all colors
   useEffect(() => {
     dispatch(fetchColorsAction({ url: productUrl }));
-  }, [dispatch, category, brand]);
+  }, [dispatch, category, brand, size, price]);
   // get data from store
   const { colors: { colors } } = useSelector((state) => state?.colors);
 
   // fetch all brands
   useEffect(() => {
     dispatch(fetchBrandsAction({ url: productUrl }));
-  }, [dispatch, category, brand]);
+  }, [dispatch, category, brand, size, price]);
   // get product from store
   const { brands: { brands } } = useSelector((state) => state?.brands);
 
@@ -415,16 +417,16 @@ export default function ProductsFilters() {
                           </h3>
                           <Disclosure.Panel className="pt-6">
                             <div className="space-y-6">
-                              {sizeCategories.map((option) => (
-                                <div key={option} className="flex items-center">
+                              {sizeCategories.map((size) => (
+                                <div key={size} className="flex items-center">
                                   <input
                                     type="radio"
                                     name="size"
-                                    onClick={() => setSize(option)}
+                                    onClick={() => setSize(size)}
                                     className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
                                   />
                                   <label className="ml-3 min-w-0 flex-1 text-gray-500">
-                                    {option}
+                                    {size}
                                   </label>
                                 </div>
                               ))}
