@@ -736,7 +736,7 @@ export default function ProductsFilters() {
               </form>
 
               {/* Product grid */}
-              {loading ? <LoadingComponent /> : error ? <ErrorMsg message={error?.message} /> : products?.length < 0 ? NoDataFound : <Products products={products} />}
+              {loading ? <LoadingComponent /> : error ? <ErrorMsg message={error?.message} /> : products?.length === 0 ? <NoDataFound /> : <Products products={products} />}
             </div>
           </section>
         </main>
