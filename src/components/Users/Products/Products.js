@@ -23,7 +23,7 @@ const Products = ({ products }) => {
                   }}>
                   <img
                     className="w-full h-64 object-cover"
-                    src={product?.images[0]}
+                    src={product?.files[0]}
                     alt
                   />
                 </Link>

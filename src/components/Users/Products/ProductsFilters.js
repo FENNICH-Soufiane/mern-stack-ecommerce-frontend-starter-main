@@ -16,9 +16,11 @@ import {
 } from "@heroicons/react/20/solid";
 import Products from "./Products";
 import { useSearchParams } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { fetchProductsAction } from "../../../redux/slices/products/productSlices";
 import baseURL from "../../../utils/baseURL";
+import { fetchBrandsAction } from "../../../redux/slices/categories/brandsSlices";
+import { fetchColorsAction } from "../../../redux/slices/categories/colorsSlices";
 
 const sortOptions = [
   { name: "Most Popular", href: "#", current: true },
@@ -78,7 +80,7 @@ export default function ProductsFilters() {
   const [params, setParams] = useSearchParams();
   const category = params.get("category");
   console.log(params);
-  
+
   // filters
   const [color, setColor] = useState("");
   const [price, setPrice] = useState("");
@@ -86,18 +88,32 @@ export default function ProductsFilters() {
   const [size, setSize] = useState("");
   // build up url
   let productUrl = `${baseURL}/products`;
+
   // fetch all products
   useEffect(() => {
-    dispatch(fetchProductsAction({url: productUrl}));
-  }, []);
+    dispatch(fetchProductsAction({ url: productUrl }));
+  }, [dispatch]);
+  // get data from store
+  const { products: { products } } = useSelector((state) => state?.products);
+
+  // fetch all colors
+  useEffect(() => {
+    dispatch(fetchColorsAction({ url: productUrl }));
+  }, [dispatch]);
+  // get data from store
+  const { colors: { colors } } = useSelector((state) => state?.colors);
+
+  // fetch all brands
+  useEffect(() => {
+    dispatch(fetchBrandsAction({ url: productUrl }));
+  }, [dispatch]);
+  // get product from store
+  const { brands: { brands } } = useSelector((state) => state?.brands);
 
   let colorsLoading;
   let colorsError;
-  let colors;
-  let brands;
   let productsLoading;
   let productsError;
-  let products;
 
   return (
     <div className="bg-white">
