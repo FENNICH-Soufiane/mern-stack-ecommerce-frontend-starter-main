@@ -79,7 +79,7 @@ export default function ProductsFilters() {
   // get query string
   const [params, setParams] = useSearchParams();
   const category = params.get("category");
-  console.log(params);
+  // console.log(category);
 
   // filters
   const [color, setColor] = useState("");
@@ -88,6 +88,9 @@ export default function ProductsFilters() {
   const [size, setSize] = useState("");
   // build up url
   let productUrl = `${baseURL}/products`;
+  if(category) {
+    productUrl = `${baseURL}/products?category=${category}`;
+  }
 
   // fetch all products
   useEffect(() => {
