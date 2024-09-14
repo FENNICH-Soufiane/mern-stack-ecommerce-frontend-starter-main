@@ -23,6 +23,18 @@ export const addOrderToCartaction = createAsyncThunk(
    }
 );
 
+//add product to cart
+export const getCartItemsFromLocalStorageAction = createAsyncThunk(
+   "cart/get-order-items",
+   async () => {
+      const cartItems = localStorage.getItem("cartItems")
+         ? JSON.parse(localStorage.getItem("cartItems"))
+         : [];
+
+      return cartItems;
+   }
+);
+
 //slice
 const cartSlice = createSlice({
    name: "cart",
@@ -43,6 +55,23 @@ const cartSlice = createSlice({
          state.isAdded = false;
          state.error = action.payload;
       });
+      //fetch cart items
+      builder.addCase(getCartItemsFromLocalStorageAction.pending, (state) => {
+         state.loading = true;
+      });
+      builder.addCase(getCartItemsFromLocalStorageAction.fulfilled, (state, action) => {
+         state.loading = false;
+         state.cartItems = action.payload;
+         state.isAdded = true;
+      }
+      );
+      builder.addCase(getCartItemsFromLocalStorageAction.rejected, (state, action) => {
+         state.loading = false;
+         state.cartItems = null;
+         state.isAdded = false;
+         state.error = action.payload;
+      }
+      );
    }
 });
 

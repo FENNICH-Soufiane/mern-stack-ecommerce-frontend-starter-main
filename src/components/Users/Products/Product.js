@@ -8,7 +8,7 @@ import { StarIcon } from "@heroicons/react/20/solid";
 import { Link, useParams } from "react-router-dom";
 import { fetchProductAction } from "../../../redux/slices/products/productSlices";
 import { useDispatch, useSelector } from "react-redux";
-import { addOrderToCartaction } from "../../../redux/slices/cart/cartSlices";
+import { addOrderToCartaction, getCartItemsFromLocalStorageAction } from "../../../redux/slices/cart/cartSlices";
 import Swal from "sweetalert2";
 
 
@@ -147,6 +147,11 @@ export default function Product() {
       confirmButtonColor: "#4F46E5"
     });
   };
+
+  // Get cart items
+  useEffect(() => {
+    dispatch(getCartItemsFromLocalStorageAction());
+  }, []);
 
   return (
     <div className="bg-white">
