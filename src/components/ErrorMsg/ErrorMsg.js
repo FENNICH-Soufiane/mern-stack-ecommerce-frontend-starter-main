@@ -9,7 +9,7 @@ const ErrorMsg = ({ message }) => {
     icon: "error",
     title: "Oops...",
     text: message,
-    confirmButtonColor: "red"
+    confirmButtonColor: "#ED5951"
   });
   dispatch(resetErrAction());
 };

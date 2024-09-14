@@ -9,6 +9,7 @@ import { Link, useParams } from "react-router-dom";
 import { fetchProductAction } from "../../../redux/slices/products/productSlices";
 import { useDispatch, useSelector } from "react-redux";
 import { addOrderToCartaction } from "../../../redux/slices/cart/cartSlices";
+import Swal from "sweetalert2";
 
 
 const product = {
@@ -112,7 +113,24 @@ export default function Product() {
   console.log(product);
 
   //Add to cart handler
-  const addToCartHandler = (item) => {
+  const addToCartHandler = () => {
+    // check if color/size selected
+    if (selectedColor === '') {
+      return Swal.fire({
+        icon: "error",
+        title: "Oops...!",
+        text: "Please select product color",
+        confirmButtonColor: "#ED5951"
+      });
+    }
+    if (selectedSize === '') {
+      return Swal.fire({
+        icon: "error",
+        title: "Oops...!",
+        text: "Please select product size",
+        confirmButtonColor: "#ED5951"
+      });
+    }
     dispatch(addOrderToCartaction({
       _id: product?._id,
       name: product?.name,
@@ -121,7 +139,13 @@ export default function Product() {
       description: product?.description,
       color: selectedColor,
       size: selectedSize
-    }))
+    }));
+    return Swal.fire({
+      icon: "success",
+      title: "Good Job!",
+      text: "Product added to cart successfully",
+      confirmButtonColor: "#4F46E5"
+    });
   };
 
   return (
