@@ -37,7 +37,7 @@ export const getCartItemsFromLocalStorageAction = createAsyncThunk(
 
 //slice
 const cartSlice = createSlice({
-   name: "cart",
+   name: "carts",
    initialState,
    extraReducers: (builder) => {
       //add to cart

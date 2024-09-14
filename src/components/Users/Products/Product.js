@@ -93,13 +93,12 @@ export default function Product() {
   const [selectedColor, setSelectedColor] = useState("");
 
   const dispatch = useDispatch();
-  console.log({selectedColor, selectedSize});
-  
+  console.log({ selectedColor, selectedSize });
+
 
   let productDetails = {};
   let productColor;
   let productSize;
-  let cartItems = [];
 
   // get id from params
   const { id } = useParams();
@@ -112,8 +111,28 @@ export default function Product() {
   const { product: { product }, loading, error } = useSelector((state) => state?.products)
   console.log(product);
 
+
+  // Get cart items
+  useEffect(() => {
+    dispatch(getCartItemsFromLocalStorageAction());
+  }, []);
+  // get data form store
+  const { cartItems } = useSelector((state) => state?.carts);
+
+  const productExists = cartItems?.find(
+    (item) => item?._id?.toString() === product?._id.toString()
+  );
   //Add to cart handler
   const addToCartHandler = () => {
+    // check if product is in cart
+    if (productExists) {
+      return Swal.fire({
+        icon: "error",
+        title: "Oops...!",
+        text: "This product is already in cart",
+        confirmButtonColor: "#ED5951"
+      })
+    };
     // check if color/size selected
     if (selectedColor === '') {
       return Swal.fire({
