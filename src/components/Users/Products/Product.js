@@ -8,6 +8,7 @@ import { StarIcon } from "@heroicons/react/20/solid";
 import { Link, useParams } from "react-router-dom";
 import { fetchProductAction } from "../../../redux/slices/products/productSlices";
 import { useDispatch, useSelector } from "react-redux";
+import { addOrderToCartaction } from "../../../redux/slices/cart/cartSlices";
 
 
 const product = {
@@ -92,8 +93,7 @@ export default function Product() {
 
   const dispatch = useDispatch();
 
-  //Add to cart handler
-  const addToCartHandler = (item) => { };
+
   let productDetails = {};
   let productColor;
   let productSize;
@@ -109,7 +109,19 @@ export default function Product() {
   // get data from store
   const { product: { product }, loading, error } = useSelector((state) => state?.products)
   console.log(product);
-  
+
+  //Add to cart handler
+  const addToCartHandler = (item) => {
+    dispatch(addOrderToCartaction({
+      _id: product?._id,
+      name: product?.name,
+      qty: product?.qty,
+      price: product?.price,
+      description: product?.description,
+      color: "",
+      size: ""
+    }))
+  };
 
   return (
     <div className="bg-white">
