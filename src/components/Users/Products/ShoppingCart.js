@@ -72,7 +72,8 @@ export default function ShoppingCart() {
                             </p>
                         </div>
                         <p className="mt-1 text-sm font-medium text-gray-900">
-                          $ {product.discountedPrice} X {product.qty}
+                          {/* $ {product.price} X {product?.qty} */}
+                          $ {product.price} 
                         </p>
                       </div>
 

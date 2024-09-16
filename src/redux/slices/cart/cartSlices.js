@@ -46,10 +46,15 @@ export const changeOrderItemQty = createAsyncThunk(
          : [];
       const newCartItems = cartItems?.map((item) => {
          if (item?._id?.toString() === productId?.toString()) {
+            // get new price
+            const newPrice = item?.price * qty;
+            item.qty = qty;
+            item.price = newPrice
             console.log(item);
          }
-         return cartItems;
+         return item;
       });
+      localStorage.setItem("cartItems", JSON.stringify(newCartItems));
    }
 );
 //slice
