@@ -49,7 +49,7 @@ export const changeOrderItemQty = createAsyncThunk(
             // get new price
             const newPrice = item?.price * qty;
             item.qty = qty;
-            item.price = newPrice
+            item.totalPrice = newPrice
             console.log(item);
          }
          return item;

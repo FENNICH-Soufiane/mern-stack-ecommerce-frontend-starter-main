@@ -158,7 +158,7 @@ export default function Product() {
       description: product?.description,
       color: selectedColor,
       size: selectedSize,
-      image: product?.images[0]
+      image: product?.files[0]
     }));
     return Swal.fire({
       icon: "success",
