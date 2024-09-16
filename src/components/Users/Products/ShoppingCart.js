@@ -6,9 +6,11 @@ import {
   XMarkIcon,
 } from "@heroicons/react/20/solid";
 import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { getCartItemsFromLocalStorageAction } from "../../../redux/slices/cart/cartSlices";
+
 
 export default function ShoppingCart() {
-  let cartItems;
   let changeOrderItemQtyHandler;
   let removeOrderItemFromLocalStorageHandler;
   let calculateTotalDiscountedPrice;
@@ -18,6 +20,15 @@ export default function ShoppingCart() {
   let setCoupon;
   let loading;
   let coupon;
+
+  // dispatch
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(getCartItemsFromLocalStorageAction());
+  }, [dispatch]);
+  // get cart items from store
+  const {cartItems} = useSelector((state) => state?.carts);
+
   return (
     <div className="bg-white">
       <div className="mx-auto max-w-2xl px-4 pt-16 pb-24 sm:px-6 lg:max-w-7xl lg:px-8">
@@ -37,8 +48,8 @@ export default function ShoppingCart() {
                 <li key={product._id} className="flex py-6 sm:py-10">
                   <div className="flex-shrink-0">
                     <img
-                      src={product.imageSrc}
-                      alt={product.imageAlt}
+                      src={product.image}
+                      alt={product.name}
                       className="h-24 w-24 rounded-md object-cover object-center sm:h-48 sm:w-48"
                     />
                   </div>
@@ -48,20 +59,17 @@ export default function ShoppingCart() {
                       <div>
                         <div className="flex justify-between">
                           <h3 className="text-sm">
-                            <a
-                              href={product.href}
+                            <p
                               className="font-medium text-gray-700 hover:text-gray-800">
                               {product.name}
-                            </a>
+                            </p>
                           </h3>
                         </div>
                         <div className="mt-1 flex text-sm">
                           <p className="text-gray-500">{product.color}</p>
-                          {product.size ? (
                             <p className="ml-4 border-l border-gray-200 pl-4 text-gray-500">
                               {product.size}
                             </p>
-                          ) : null}
                         </div>
                         <p className="mt-1 text-sm font-medium text-gray-900">
                           $ {product.discountedPrice} X {product.qty}
@@ -123,7 +131,7 @@ export default function ShoppingCart() {
               <div className="flex items-center justify-between">
                 <dt className="text-sm text-gray-600">Subtotal</dt>
                 <dd className="text-sm font-medium text-gray-900">
-                  $ {calculateTotalDiscountedPrice().toFixed(2)}
+                  $ 300
                 </dd>
               </div>
               <div className="flex items-center justify-between border-t border-gray-200 pt-4"></div>
@@ -168,7 +176,7 @@ export default function ShoppingCart() {
                   Order total
                 </dt>
                 <dd className=" text-xl font-medium text-gray-900">
-                  $ {calculateTotalDiscountedPrice().toFixed(2)}
+                  $ 300
                 </dd>
               </div>
             </dl>

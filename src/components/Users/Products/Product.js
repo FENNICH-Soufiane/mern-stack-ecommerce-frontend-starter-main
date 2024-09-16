@@ -157,7 +157,8 @@ export default function Product() {
       price: product?.price,
       description: product?.description,
       color: selectedColor,
-      size: selectedSize
+      size: selectedSize,
+      image: product?.images[0]
     }));
     return Swal.fire({
       icon: "success",
@@ -324,7 +325,7 @@ export default function Product() {
               </button>
               {/* proceed to check */}
 
-              {cartItems.length > 0 && (
+              {cartItems?.length > 0 && (
                 <Link
                   to="/shopping-cart"
                   className="mt-8 flex w-full items-center justify-center rounded-md border border-transparent bg-green-800 py-3 px-8 text-base font-medium text-white hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
