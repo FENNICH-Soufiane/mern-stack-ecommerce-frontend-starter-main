@@ -35,6 +35,23 @@ export const getCartItemsFromLocalStorageAction = createAsyncThunk(
    }
 );
 
+//add product to cart
+export const changeOrderItemQty = createAsyncThunk(
+   "cart/change-item-qty",
+   async ({productId, qty}) => {
+      console.log(productId, qty);
+      
+      const cartItems = localStorage.getItem("cartItems")
+         ? JSON.parse(localStorage.getItem("cartItems"))
+         : [];
+      const newCartItems = cartItems?.map((item) => {
+         if (item?._id?.toString() === productId?.toString()) {
+            console.log(item);
+         }
+         return cartItems;
+      });
+   }
+);
 //slice
 const cartSlice = createSlice({
    name: "carts",
