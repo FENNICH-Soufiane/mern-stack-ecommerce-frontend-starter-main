@@ -153,12 +153,13 @@ export default function Product() {
     dispatch(addOrderToCartaction({
       _id: product?._id,
       name: product?.name,
-      qty: product?.qty,
+      qty: 1,
       price: product?.price,
       description: product?.description,
       color: selectedColor,
       size: selectedSize,
-      image: product?.files[0]
+      image: product?.files[0],
+      totalPrice: product?.price
     }));
     return Swal.fire({
       icon: "success",
