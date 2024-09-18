@@ -7,11 +7,10 @@ import {
 } from "@heroicons/react/20/solid";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { changeOrderItemQty, getCartItemsFromLocalStorageAction } from "../../../redux/slices/cart/cartSlices";
+import { changeOrderItemQty, getCartItemsFromLocalStorageAction, removeOrderItemQty } from "../../../redux/slices/cart/cartSlices";
 
 
 export default function ShoppingCart() {
-  let changeOrderItemQtyHandler;
   let removeOrderItemFromLocalStorageHandler;
   let calculateTotalDiscountedPrice;
   let error;
@@ -28,8 +27,17 @@ export default function ShoppingCart() {
   }, [dispatch]);
   // get cart items from store
   const {cartItems} = useSelector((state) => state?.carts);
-  // add to cart handler
-  // const changeOrderItemQtyHandler
+  //add to cart handler
+  const changeOrderItemQtyHandler = (productId, qty) => {
+    dispatch(changeOrderItemQty({ productId, qty }));
+    dispatch(getCartItemsFromLocalStorageAction());
+  };
+
+  //remove cart  Item handler
+  const removeOrderItemQtyHandler = (productId) => {
+    dispatch(removeOrderItemQty(productId));
+    dispatch(getCartItemsFromLocalStorageAction());
+  };
 
   return (
     <div className="bg-white">
@@ -89,13 +97,9 @@ export default function ShoppingCart() {
                           //     e.target.value
                           //   )
                           // }
-                          onChange={(e) => {
-                            dispatch(changeOrderItemQty({
-                              productId: product?._id,
-                              qty: e.target?.value
-                            }));
-                            dispatch(getCartItemsFromLocalStorageAction());
-                          }}
+                          onChange={(e) => 
+                            changeOrderItemQtyHandler(product?._id, e.target.value)  
+                          }                                           
                           className="max-w-full rounded-md border border-gray-300 py-1.5 text-left text-base font-medium leading-5 text-gray-700 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 sm:text-sm">
                           {/* use the qty  */}
 
@@ -109,9 +113,7 @@ export default function ShoppingCart() {
                         <div className="absolute top-0 right-0">
                           <button
                             onClick={() =>
-                              removeOrderItemFromLocalStorageHandler(
-                                product?._id
-                              )
+                              removeOrderItemQtyHandler(product?._id)
                             }
                             className="-m-2 inline-flex p-2 text-gray-400 hover:text-gray-500">
                             <span className="sr-only">Remove</span>
