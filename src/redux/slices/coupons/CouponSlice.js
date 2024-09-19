@@ -6,20 +6,20 @@ const { createAsyncThunk, createSlice } = require("@reduxjs/toolkit");
 
 //initalsState
 const initialState = {
-  coupons: [],
-  coupon: null,
-  loading: false,
-  error: null,
-  isAdded: false,
-  isUpdated: false,
-  isDelete: false,
+   coupons: [],
+   coupon: null,
+   loading: false,
+   error: null,
+   isAdded: false,
+   isUpdated: false,
+   isDelete: false,
 };
 
 
 //create coupon action
 export const createCouponAction = createAsyncThunk(
    "coupons/create",
-   async ({code, discount, startDate, endDate}, { rejectWithValue, getState, dispatch }) => {
+   async ({ code, discount, startDate, endDate }, { rejectWithValue, getState, dispatch }) => {
       // console.log(getState);
       try {
          const token = getState()?.users?.userAuth?.userInfo?.token;
@@ -28,7 +28,7 @@ export const createCouponAction = createAsyncThunk(
                Authorization: `Bearer ${token}`
             },
          };
-         const { data } = await axios.post(`${baseURL}/coupons`, {code, discount, startDate, endDate} , config);
+         const { data } = await axios.post(`${baseURL}/coupons`, { code, discount, startDate, endDate }, config);
          return data
       } catch (error) {
          return rejectWithValue(error?.response?.data);
@@ -46,6 +46,23 @@ export const fetchCouponsAction = createAsyncThunk(
       try {
          const { data } = await axios.get(`${baseURL}/brands`);
          return data
+      } catch (error) {
+         return rejectWithValue(error?.response?.data);
+      }
+   }
+);
+
+
+//fetch coupon action
+export const fetchCouponAction = createAsyncThunk(
+   "coupons/single",
+   async (code, { rejectWithValue, getState, dispatch }) => {
+      try {
+         const { data } = await axios.get(
+            `${baseURL}/coupons/single?code=${code}`,
+            { code }
+         );
+         return data;
       } catch (error) {
          return rejectWithValue(error?.response?.data);
       }
@@ -89,7 +106,7 @@ const couponsSlices = createSlice({
          state.error = action.payload;
       });
       // Reset success
-       builder.addCase(resetSuccessAction.pending, (state) => {
+      builder.addCase(resetSuccessAction.pending, (state) => {
          state.error = null;
       });
       // Reset err
