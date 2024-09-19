@@ -159,7 +159,8 @@ export default function Product() {
       color: selectedColor,
       size: selectedSize,
       image: product?.files[0],
-      totalPrice: product?.price
+      totalPrice: product?.price,
+      qtyLeft: product?.qtyLeft
     }));
     return Swal.fire({
       icon: "success",

@@ -26,7 +26,7 @@ export default function ShoppingCart() {
     dispatch(getCartItemsFromLocalStorageAction());
   }, [dispatch]);
   // get cart items from store
-  const {cartItems} = useSelector((state) => state?.carts);
+  const { cartItems } = useSelector((state) => state?.carts);
   //add to cart handler
   const changeOrderItemQtyHandler = (productId, qty) => {
     dispatch(changeOrderItemQty({ productId, qty }));
@@ -39,14 +39,14 @@ export default function ShoppingCart() {
     dispatch(getCartItemsFromLocalStorageAction());
   };
 
-  
-    //calculate total price
-    let sumTotalPrice = 0;
-    sumTotalPrice = cartItems?.reduce((acc, current) => {
-      return acc + current?.totalPrice;
-    }, 0);
-    console.log(sumTotalPrice);
-    
+
+  //calculate total price
+  let sumTotalPrice = 0;
+  sumTotalPrice = cartItems?.reduce((acc, current) => {
+    return acc + current?.totalPrice;
+  }, 0);
+  console.log(sumTotalPrice);
+
 
   return (
     <div className="bg-white">
@@ -86,9 +86,9 @@ export default function ShoppingCart() {
                         </div>
                         <div className="mt-1 flex text-sm">
                           <p className="text-gray-500">{product.color}</p>
-                            <p className="ml-4 border-l border-gray-200 pl-4 text-gray-500">
-                              {product.size}
-                            </p>
+                          <p className="ml-4 border-l border-gray-200 pl-4 text-gray-500">
+                            {product.size}
+                          </p>
                         </div>
                         <p className="mt-1 text-sm font-medium text-gray-900">
                           $ {product?.price} x {product?.qty} = ${product?.totalPrice}
@@ -106,17 +106,16 @@ export default function ShoppingCart() {
                           //     e.target.value
                           //   )
                           // }
-                          onChange={(e) => 
-                            changeOrderItemQtyHandler(product?._id, e.target.value)  
-                          }                                           
+                          onChange={(e) =>
+                            changeOrderItemQtyHandler(product?._id, e.target.value)
+                          }
                           className="max-w-full rounded-md border border-gray-300 py-1.5 text-left text-base font-medium leading-5 text-gray-700 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 sm:text-sm">
                           {/* use the qty  */}
+                          {[...Array(product?.qtyLeft).keys()].map((x) => 
+                            <option key={x} value={x + 1}>{x + 1}</option>
+                          )}
 
-                            <option value={1}>{1}</option>
-                            <option value={2}>{2}</option>
-                            <option value={3}>{3}</option>
-                            <option value={4}>{4}</option>
-                            <option value={5}>{5}</option>
+
                         </select>
                         {/* remove */}
                         <div className="absolute top-0 right-0">
