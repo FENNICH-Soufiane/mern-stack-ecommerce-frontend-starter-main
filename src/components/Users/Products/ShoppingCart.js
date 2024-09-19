@@ -27,6 +27,7 @@ export default function ShoppingCart() {
   const applyCouponSubmit = (e) => {
     e.preventDefault();
     dispatch(fetchCouponAction(couponCode));
+    setCouponCode('')
   }
 
   const { coupon, loading, error, isAdded } = useSelector((state) => state?.coupons);
@@ -188,7 +189,7 @@ export default function ShoppingCart() {
               <form onSubmit={applyCouponSubmit}>
                 <div className="mt-1">
                   <input
-                    value={coupon?.coupon?.discount}
+                    value={couponCode}
                     onChange={(e) => setCouponCode(e.target.value)}
                     type="text"
                     className="block w-full rounded-md border p-2 border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
