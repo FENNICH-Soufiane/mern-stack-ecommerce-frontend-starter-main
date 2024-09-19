@@ -8,6 +8,7 @@ import {
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { changeOrderItemQty, getCartItemsFromLocalStorageAction, removeOrderItemQty } from "../../../redux/slices/cart/cartSlices";
+import { fetchCouponAction } from "../../../redux/slices/coupons/CouponSlice";
 
 
 export default function ShoppingCart() {
@@ -15,10 +16,15 @@ export default function ShoppingCart() {
   let calculateTotalDiscountedPrice;
   let error;
   let couponFound;
-  let applyCouponSubmit;
-  let setCoupon;
   let loading;
-  let coupon;
+  
+
+  // coupon state
+  const [coupon, setCoupon] = useState(null)
+  const applyCouponSubmit = (e) => {
+    e.preventDefault();
+    dispatch(fetchCouponAction(coupon));
+  }
 
   // dispatch
   const dispatch = useDispatch();

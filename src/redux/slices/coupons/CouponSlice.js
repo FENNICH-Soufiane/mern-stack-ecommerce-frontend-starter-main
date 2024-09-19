@@ -44,7 +44,7 @@ export const fetchCouponsAction = createAsyncThunk(
    async (payload, { rejectWithValue, getState, dispatch }) => {
       // console.log(getState);
       try {
-         const { data } = await axios.get(`${baseURL}/brands`);
+         const { data } = await axios.get(`${baseURL}/coupons`);
          return data
       } catch (error) {
          return rejectWithValue(error?.response?.data);
@@ -103,6 +103,19 @@ const couponsSlices = createSlice({
          state.loading = false;
          state.coupons = null;
          state.isAdded = false;
+         state.error = action.payload;
+      });
+      //fetch single coupon
+      builder.addCase(fetchCouponAction.pending, (state) => {
+         state.loading = true;
+      });
+      builder.addCase(fetchCouponAction.fulfilled, (state, action) => {
+         state.loading = false;
+         state.coupon = action.payload;
+      });
+      builder.addCase(fetchCouponAction.rejected, (state, action) => {
+         state.loading = false;
+         state.coupon = null;
          state.error = action.payload;
       });
       // Reset success
