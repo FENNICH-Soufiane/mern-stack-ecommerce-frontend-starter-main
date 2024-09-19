@@ -63,6 +63,10 @@ export default function ShoppingCart() {
   sumTotalPrice = cartItems?.reduce((acc, current) => {
     return acc + current?.totalPrice;
   }, 0);
+  // check if coupon found
+  if(coupon) {
+    sumTotalPrice = sumTotalPrice - (sumTotalPrice * coupon?.coupon?.discount) / 100;
+  }
   console.log(sumTotalPrice);
 
 
@@ -184,11 +188,11 @@ export default function ShoppingCart() {
               <form onSubmit={applyCouponSubmit}>
                 <div className="mt-1">
                   <input
-                    value={couponCode}
+                    value={coupon?.coupon?.discount}
                     onChange={(e) => setCouponCode(e.target.value)}
                     type="text"
                     className="block w-full rounded-md border p-2 border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                    placeholder="you@example.com"
+                    placeholder="Enter Coupon Code"
                   />
                 </div>
                 {loading ? (
@@ -205,7 +209,7 @@ export default function ShoppingCart() {
                   Order total
                 </dt>
                 <dd className=" text-xl font-medium text-gray-900">
-                  $ 300
+                  $ {sumTotalPrice}
                 </dd>
               </div>
             </dl>
