@@ -9,25 +9,37 @@ import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { changeOrderItemQty, getCartItemsFromLocalStorageAction, removeOrderItemQty } from "../../../redux/slices/cart/cartSlices";
 import { fetchCouponAction } from "../../../redux/slices/coupons/CouponSlice";
+import LoadingComponent from "../../LoadingComp/LoadingComponent";
+import ErrorMsg from "../../ErrorMsg/ErrorMsg";
+import SuccessMsg from "../../SuccessMsg/SuccessMsg";
+import { resetSuccessAction } from "../../../redux/slices/users/globalActions/globalActions";
 
 
 export default function ShoppingCart() {
   let removeOrderItemFromLocalStorageHandler;
   let calculateTotalDiscountedPrice;
-  let error;
   let couponFound;
-  let loading;
   
+  const dispatch = useDispatch();
 
   // coupon state
-  const [coupon, setCoupon] = useState(null)
+  const [couponCode, setCouponCode] = useState(null)
   const applyCouponSubmit = (e) => {
     e.preventDefault();
-    dispatch(fetchCouponAction(coupon));
+    dispatch(fetchCouponAction(couponCode));
   }
 
+  const { coupon, loading, error, isAdded } = useSelector((state) => state?.coupons);
+
+  useEffect(() => {
+    if (isAdded) {
+      setTimeout(() => {
+        dispatch(resetSuccessAction());
+      }, 1000); // Reset after 3 seconds
+    }
+  }, [isAdded, dispatch]);
+
   // dispatch
-  const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getCartItemsFromLocalStorageAction());
   }, [dispatch]);
@@ -165,30 +177,22 @@ export default function ShoppingCart() {
                 <span>Have coupon code? </span>
               </dt>
               {/* errr */}
-              {error && <span className="text-red-500">{error?.message}</span>}
-              {/* success */}
-              {couponFound?.status === "success" && !error && (
-                <span className="text-green-800">
-                  Congrats! You have got{" "}
-                  {couponFound?.coupon?.discountInPercentage} % discount
-                </span>
-              )}
+              {error && <ErrorMsg message={error?.message} />}
+              {isAdded && <SuccessMsg message={`Congratulation you got ${coupon?.coupon?.discount} %`}/>}
+              
+              
               <form onSubmit={applyCouponSubmit}>
                 <div className="mt-1">
                   <input
-                    value={coupon}
-                    onChange={(e) => setCoupon(e.target.value)}
+                    value={couponCode}
+                    onChange={(e) => setCouponCode(e.target.value)}
                     type="text"
                     className="block w-full rounded-md border p-2 border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                     placeholder="you@example.com"
                   />
                 </div>
                 {loading ? (
-                  <button
-                    disabled
-                    className="inline-flex  text-center mt-4 items-center rounded border border-transparent bg-gray-600 px-2.5 py-1.5 text-xs font-medium text-white shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
-                    Loading Please Wait...
-                  </button>
+                  <LoadingComponent />
                 ) : (
                   <button className="inline-flex  text-center mt-4 items-center rounded border border-transparent bg-green-600 px-2.5 py-1.5 text-xs font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
                     Apply coupon

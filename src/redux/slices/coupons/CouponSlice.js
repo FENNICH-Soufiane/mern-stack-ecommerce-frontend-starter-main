@@ -64,6 +64,7 @@ export const fetchCouponAction = createAsyncThunk(
          );
          return data;
       } catch (error) {
+         console.log(error);
          return rejectWithValue(error?.response?.data);
       }
    }
@@ -112,20 +113,24 @@ const couponsSlices = createSlice({
       builder.addCase(fetchCouponAction.fulfilled, (state, action) => {
          state.loading = false;
          state.coupon = action.payload;
+         state.isAdded = true;
       });
       builder.addCase(fetchCouponAction.rejected, (state, action) => {
          state.loading = false;
          state.coupon = null;
          state.error = action.payload;
       });
-      // Reset success
-      builder.addCase(resetSuccessAction.pending, (state) => {
-         state.error = null;
-      });
       // Reset err
       builder.addCase(resetErrAction.pending, (state) => {
          state.isAdded = false;
+         state.error = null;
       });
+      // Reset success
+      builder.addCase(resetSuccessAction.pending, (state) => {
+         state.error = null;
+         state.isAdded = false;
+      });
+
    }
 })
 
