@@ -16,7 +16,7 @@ const initialState = {
 
 //create order action
 export const placeOrderAction = createAsyncThunk(
-   "order/place-order",
+   "orders/place-order",
    async (payload, { rejectWithValue, getState, dispatch }) => {
       try {
          const { orderItems, shippingAddress, totalPrice } = payload;
@@ -38,6 +38,7 @@ export const placeOrderAction = createAsyncThunk(
             config
          );
          return window.open(data?.url);
+         // return data;
       } catch (error) {
          return rejectWithValue(error?.response?.data);
       }

@@ -9,10 +9,7 @@ import LoadingComponent from "../../LoadingComp/LoadingComponent";
 const AddShippingAddress = () => {
 
   const dispatch = useDispatch();
-  // user profile
-  useEffect(() => {
-    dispatch(getUserProfileAction());
-  }, [dispatch])
+
 
   const [formData, setFormData] = useState({
     firstName: "",
@@ -35,13 +32,17 @@ const AddShippingAddress = () => {
     dispatch(updateUserShippingAddressAction(formData));
   };
 
+  // user profile
+  useEffect(() => {
+    dispatch(getUserProfileAction());
+  }, [dispatch])
   //user profile
   const { loading, error, profile } = useSelector(state => state?.users);
   const user = profile?.user;
 
   return (
     <>
-    {error && <ErrorMsg message={error?.message} />}
+      {error && <ErrorMsg message={error?.message} />}
       {/* shipping details */}
       {user?.hasShippingAddress ? (
         <div className="mt-6">
