@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { updateUserShippingAddressAction } from "../../../redux/slices/users/userSlice";
+import { getUserProfileAction, updateUserShippingAddressAction } from "../../../redux/slices/users/userSlice";
 import { useDispatch, useSelector } from "react-redux";
 import ErrorMsg from "../../ErrorMsg/ErrorMsg";
 import SuccessMsg from "../../SuccessMsg/SuccessMsg";
@@ -9,6 +9,10 @@ import LoadingComponent from "../../LoadingComp/LoadingComponent";
 const AddShippingAddress = () => {
 
   const dispatch = useDispatch();
+  // user profile
+  useEffect(() => {
+    dispatch(getUserProfileAction());
+  }, [dispatch])
 
   const [formData, setFormData] = useState({
     firstName: "",

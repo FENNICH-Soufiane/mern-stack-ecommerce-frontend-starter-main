@@ -69,6 +69,29 @@ export const updateUserShippingAddressAction = createAsyncThunk(
    }
 );
 
+
+//user profile action
+export const getUserProfileAction = createAsyncThunk(
+   "users/profile-fetched",
+   async (payload, { rejectWithValue, getState, dispatch }) => {
+      try {
+         //get token
+         const token = getState()?.users?.userAuth?.userInfo?.token;
+         const config = {
+            headers: {
+               Authorization: `Bearer ${token}`,
+            },
+         };
+         const { data } = await axios.get(`${baseURL}/users/profile`, config);
+         return data;
+      } catch (error) {
+         console.log(error);
+         return rejectWithValue(error?.response?.data);
+      }
+   }
+);
+
+
 //register action
 export const registerUserAction = createAsyncThunk(
    "users/register",
@@ -137,6 +160,18 @@ const usersSlice = createSlice({
          state.loading = false;
       }
       );
+      //profile
+      builder.addCase(getUserProfileAction.pending, (state, action) => {
+         state.loading = true;
+      });
+      builder.addCase(getUserProfileAction.fulfilled, (state, action) => {
+         state.profile = action.payload;
+         state.loading = false;
+      });
+      builder.addCase(getUserProfileAction.rejected, (state, action) => {
+         state.error = action.payload;
+         state.loading = false;
+      });
       //reset error action
       builder.addCase(resetErrAction.pending, (state) => {
          state.error = null;
