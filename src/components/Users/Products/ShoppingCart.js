@@ -19,7 +19,7 @@ export default function ShoppingCart() {
   let removeOrderItemFromLocalStorageHandler;
   let calculateTotalDiscountedPrice;
   let couponFound;
-  
+
   const dispatch = useDispatch();
 
   // coupon state
@@ -65,7 +65,7 @@ export default function ShoppingCart() {
     return acc + current?.totalPrice;
   }, 0);
   // check if coupon found
-  if(coupon) {
+  if (coupon) {
     sumTotalPrice = sumTotalPrice - (sumTotalPrice * coupon?.coupon?.discount) / 100;
   }
   console.log(sumTotalPrice);
@@ -134,7 +134,7 @@ export default function ShoppingCart() {
                           }
                           className="max-w-full rounded-md border border-gray-300 py-1.5 text-left text-base font-medium leading-5 text-gray-700 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 sm:text-sm">
                           {/* use the qty  */}
-                          {[...Array(product?.qtyLeft).keys()].map((x) => 
+                          {[...Array(product?.qtyLeft).keys()].map((x) =>
                             <option key={x} value={x + 1}>{x + 1}</option>
                           )}
 
@@ -183,9 +183,9 @@ export default function ShoppingCart() {
               </dt>
               {/* errr */}
               {error && <ErrorMsg message={error?.message} />}
-              {isAdded && <SuccessMsg message={`Congratulation you got ${coupon?.coupon?.discount} %`}/>}
-              
-              
+              {isAdded && <SuccessMsg message={`Congratulation you got ${coupon?.coupon?.discount} %`} />}
+
+
               <form onSubmit={applyCouponSubmit}>
                 <div className="mt-1">
                   <input
@@ -218,9 +218,8 @@ export default function ShoppingCart() {
             <div className="mt-6">
               <Link
                 //  pass data to checkout page
-                to={{
-                  pathname: "/order-payment",
-                }}
+                to="/order-payment"
+                state={{ sumTotalPrice }}
                 className="w-full rounded-md border border-transparent bg-indigo-600 py-3 px-4 text-base font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-50">
                 Proceed to Checkout
               </Link>
