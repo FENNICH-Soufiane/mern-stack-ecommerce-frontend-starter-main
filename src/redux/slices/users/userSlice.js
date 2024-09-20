@@ -47,7 +47,7 @@ export const updateUserShippingAddressAction = createAsyncThunk(
       { firstName, lastName, address, city, postalCode, province, phone, country },
       { rejectWithValue, getState, dispatch }
    ) => {
-      console.log(firstName, lastName, address, city, postalCode, province, phone, country);
+      // console.log(firstName, lastName, address, city, postalCode, province, phone, country);
       try {
          //get token
          const token = getState()?.users?.userAuth?.userInfo?.token;
