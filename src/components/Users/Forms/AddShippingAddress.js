@@ -36,7 +36,8 @@ const AddShippingAddress = () => {
   };
 
   //user profile
-  const { user, loading, error } = useSelector(state => state?.users);
+  const { loading, error, profile } = useSelector(state => state?.users);
+  const user = profile?.user;
 
   return (
     <>
