@@ -6,6 +6,7 @@ import brandsReducer from "../slices/categories/brandsSlices";
 import colorsReducer from "../slices/categories/colorsSlices";
 import cartReducer from "../slices/cart/cartSlices";
 import couponsReducer from "../slices/coupons/CouponSlice";
+import ordersReducer from "../slices/orders/ordersSlices";
 
 
 //store
@@ -18,6 +19,7 @@ const store = configureStore({
       colors: colorsReducer,
       carts: cartReducer,
       coupons: couponsReducer,
+      orders: ordersReducer
    }
 });
 
