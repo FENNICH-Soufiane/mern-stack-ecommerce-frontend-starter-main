@@ -13,8 +13,8 @@ const initialState = {
       loading: false,
       error: null,
       userInfo: localStorage.getItem("userInfo")
-      ? JSON.parse(localStorage.getItem("userInfo"))
-      : null,
+         ? JSON.parse(localStorage.getItem("userInfo"))
+         : null,
    },
 };
 
@@ -32,6 +32,35 @@ export const loginUserAction = createAsyncThunk(
          //save the user into localstorage
          localStorage.setItem("userInfo", JSON.stringify(data));
 
+         return data;
+      } catch (error) {
+         console.log(error);
+         return rejectWithValue(error?.response?.data);
+      }
+   }
+);
+
+//update user shipping address action
+export const updateUserShippingAddressAction = createAsyncThunk(
+   "users/update-shipping-address",
+   async (
+      { firstName, lastName, address, city, postalCode, province, phone, country },
+      { rejectWithValue, getState, dispatch }
+   ) => {
+      console.log(firstName, lastName, address, city, postalCode, province, phone, country);
+      try {
+         //get token
+         const token = getState()?.users?.userAuth?.userInfo?.token;
+         const config = {
+            headers: {
+               Authorization: `Bearer ${token}`,
+            },
+         };
+         const { data } = await axios.put(
+            `${baseURL}/users/update/shipping`,
+            { firstName, lastName, address, city, postalCode, province, phone, country },
+            config
+         );
          return data;
       } catch (error) {
          console.log(error);
@@ -93,6 +122,21 @@ const usersSlice = createSlice({
          state.error = action.payload;
          state.loading = false;
       });
+      //shipping address
+      builder.addCase(updateUserShippingAddressAction.pending, (state, action) => {
+         state.loading = true;
+      }
+      );
+      builder.addCase(updateUserShippingAddressAction.fulfilled, (state, action) => {
+         state.user = action.payload;
+         state.loading = false;
+      }
+      );
+      builder.addCase(updateUserShippingAddressAction.rejected, (state, action) => {
+         state.error = action.payload;
+         state.loading = false;
+      }
+      );
       //reset error action
       builder.addCase(resetErrAction.pending, (state) => {
          state.error = null;
