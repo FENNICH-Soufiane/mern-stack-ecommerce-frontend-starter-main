@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { updateUserShippingAddressAction } from "../../../redux/slices/users/userSlice";
 import { useDispatch, useSelector } from "react-redux";
+import ErrorMsg from "../../ErrorMsg/ErrorMsg";
+import SuccessMsg from "../../SuccessMsg/SuccessMsg";
+import LoadingComponent from "../../LoadingComp/LoadingComponent";
+
 
 const AddShippingAddress = () => {
 
   const dispatch = useDispatch();
-
-  //user profile
-  const { user } = {};
 
   const [formData, setFormData] = useState({
     firstName: "",
@@ -28,11 +29,14 @@ const AddShippingAddress = () => {
   const onSubmit = (e) => {
     e.preventDefault();
     dispatch(updateUserShippingAddressAction(formData));
-
   };
+
+  //user profile
+  const { user, loading, error } = useSelector(state => state?.users);
 
   return (
     <>
+    {error && <ErrorMsg message={error?.message} />}
       {/* shipping details */}
       {user?.hasShippingAddress ? (
         <div className="mt-6">
@@ -217,11 +221,14 @@ const AddShippingAddress = () => {
               />
             </div>
           </div>
-          <button
-            type="submit"
-            className="w-full rounded-md border border-transparent bg-indigo-600 py-3 px-4 text-base font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-50">
-            Add Shipping Address
-          </button>
+          {
+            loading ? <LoadingComponent /> :
+              <button
+                type="submit"
+                className="w-full rounded-md border border-transparent bg-indigo-600 py-3 px-4 text-base font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-50">
+                Add Shipping Address
+              </button>
+          }
         </form>
       )}
     </>
