@@ -224,7 +224,7 @@ export default function Product() {
               {/* leave a review */}
 
               <div className="mt-4">
-                <Link to={`/add-review/${productDetails?.product?._id}`}>
+                <Link to={`/add-review/${product?._id}`}>
                   <h3 className="text-sm font-medium text-blue-600">
                     Leave a review
                   </h3>
