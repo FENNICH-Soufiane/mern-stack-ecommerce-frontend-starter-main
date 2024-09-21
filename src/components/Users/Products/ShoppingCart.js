@@ -87,11 +87,11 @@ export default function ShoppingCart() {
               role="list"
               className="divide-y divide-gray-200 border-t border-b border-gray-200">
               {cartItems?.map((product) => (
-                <li key={product._id} className="flex py-6 sm:py-10">
+                <li key={product?._id} className="flex py-6 sm:py-10">
                   <div className="flex-shrink-0">
                     <img
-                      src={product.image}
-                      alt={product.name}
+                      src={product?.image}
+                      alt={product?.name}
                       className="h-24 w-24 rounded-md object-cover object-center sm:h-48 sm:w-48"
                     />
                   </div>
@@ -103,14 +103,14 @@ export default function ShoppingCart() {
                           <h3 className="text-sm">
                             <p
                               className="font-medium text-gray-700 hover:text-gray-800">
-                              {product.name}
+                              {product?.name}
                             </p>
                           </h3>
                         </div>
                         <div className="mt-1 flex text-sm">
-                          <p className="text-gray-500">{product.color}</p>
+                          <p className="text-gray-500">{product?.color}</p>
                           <p className="ml-4 border-l border-gray-200 pl-4 text-gray-500">
-                            {product.size}
+                            {product?.size}
                           </p>
                         </div>
                         <p className="mt-1 text-sm font-medium text-gray-900">
@@ -120,7 +120,7 @@ export default function ShoppingCart() {
 
                       <div className="mt-4 sm:mt-0 sm:pr-9">
                         <label className="sr-only">
-                          Quantity, {product.name}
+                          Quantity, {product?.name}
                         </label>
                         <select
                           // onChange={(e) =>

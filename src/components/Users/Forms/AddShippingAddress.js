@@ -89,7 +89,7 @@ const AddShippingAddress = () => {
                 type="text"
                 name="firstName"
                 onChange={onChange}
-                value={formData.firstName}
+                value={formData?.firstName || ""}
                 autoComplete="given-name"
                 className="block w-full rounded-md border-gray-300  p-2 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
               />
@@ -124,7 +124,7 @@ const AddShippingAddress = () => {
                 type="text"
                 name="address"
                 onChange={onChange}
-                value={formData.address}
+                value={formData?.address}
                 autoComplete="street-address"
                 className="block w-full rounded-md border-gray-300 p-2 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
               />
@@ -142,7 +142,7 @@ const AddShippingAddress = () => {
                 type="text"
                 name="city"
                 onChange={onChange}
-                value={formData.city}
+                value={formData?.city}
                 autoComplete="address-level2"
                 className="block w-full rounded-md border-gray-300 p-2 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
               />
@@ -160,7 +160,7 @@ const AddShippingAddress = () => {
                 id="country"
                 name="country"
                 autoComplete="country"
-                value={formData.country}
+                value={formData?.country}
                 onChange={onChange}
                 className="block w-full rounded-md border-gray-300 p-2 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
                 <option value="USA">United States</option>
@@ -184,7 +184,7 @@ const AddShippingAddress = () => {
                 type="text"
                 name="region"
                 onChange={onChange}
-                value={formData.region}
+                value={formData?.region}
                 autoComplete="address-level1"
                 className="block w-full rounded-md border-gray-300 p-2 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
               />
@@ -202,7 +202,7 @@ const AddShippingAddress = () => {
                 type="text"
                 name="postalCode"
                 onChange={onChange}
-                value={formData.postalCode}
+                value={formData?.postalCode}
                 autoComplete="postal-code"
                 className="block w-full rounded-md border-gray-300 p-2 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
               />
@@ -221,7 +221,7 @@ const AddShippingAddress = () => {
                 name="phone"
                 id="phone"
                 onChange={onChange}
-                value={formData.phone}
+                value={formData?.phone}
                 autoComplete="tel"
                 className="block w-full rounded-md border-gray-300 p-2 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
               />

@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import AddShippingAddress from "../Forms/AddShippingAddress";
-import { getCartItemsFromLocalStorageAction } from "../../../redux/slices/cart/cartSlices";
+import { emptyCart, getCartItemsFromLocalStorageAction } from "../../../redux/slices/cart/cartSlices";
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { placeOrderAction } from "../../../redux/slices/orders/ordersSlices";
@@ -17,12 +17,14 @@ export default function OrderPayment() {
 
   const dispatch = useDispatch();
   // dispatch
-  useEffect(() => {
-    dispatch(getCartItemsFromLocalStorageAction());
-  }, [dispatch]);
+  
 
   // get cart items from store
   const { cartItems } = useSelector((state) => state?.carts);
+
+  useEffect(() => {
+    dispatch(getCartItemsFromLocalStorageAction());
+  }, [dispatch]);
 
   const calculateTotalDiscountedPrice = () => { };
 
@@ -41,6 +43,10 @@ export default function OrderPayment() {
       shippingAddress: shippingAddress,
       totalPrice: sumTotalPrice
     }));
+    // Vider le panier
+  dispatch(emptyCart());
+    // empty cart items
+    localStorage?.removeItem("cartItems")
   }
 
   const { loading: orderLaoding, error: orderErr } = useSelector(state => state?.orders);
@@ -72,11 +78,11 @@ export default function OrderPayment() {
                   <h3 className="sr-only">Items in your cart</h3>
                   <ul role="list" className="divide-y divide-gray-200">
                     {cartItems?.map((product) => (
-                      <li key={product._id} className="flex py-6 px-4 sm:px-6">
+                      <li key={product?._id} className="flex py-6 px-4 sm:px-6">
                         <div className="flex-shrink-0">
                           <img
                             src={product?.image}
-                            alt={product._id}
+                            alt={product?._id}
                             className="w-20 rounded-md"
                           />
                         </div>
@@ -85,13 +91,13 @@ export default function OrderPayment() {
                           <div className="flex">
                             <div className="min-w-0 flex-1">
                               <p className="mt-1 text-sm text-gray-500">
-                                {product.name}
+                                {product?.name}
                               </p>
                               <p className="mt-1 text-sm text-gray-500">
-                                {product.size}
+                                {product?.size}
                               </p>
                               <p className="mt-1 text-sm text-gray-500">
-                                {product.color}
+                                {product?.color}
                               </p>
                             </div>
                           </div>
