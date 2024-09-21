@@ -427,11 +427,11 @@ export default function Product() {
                 </div>
 
                 <div className="mt-6 flex items-center text-sm lg:col-span-4 lg:col-start-1 lg:row-start-1 lg:mt-0 lg:flex-col lg:items-start xl:col-span-3">
-                  <p className="font-medium text-gray-900">{review.author}</p>
+                  <p className="font-medium text-gray-900">{review?.user?.fullname}</p>
                   <time
                     dateTime={review.datetime}
                     className="ml-4 border-l border-gray-200 pl-4 text-gray-500 lg:ml-0 lg:mt-2 lg:border-0 lg:pl-0">
-                    {review.date}
+                    {new Date(review?.createdAt).toLocaleDateString()}
                   </time>
                 </div>
               </div>
