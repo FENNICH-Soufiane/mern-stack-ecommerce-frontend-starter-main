@@ -193,15 +193,15 @@ export default function Product() {
               <h2 className="sr-only">Reviews</h2>
               <div className="flex items-center">
                 <p className="text-sm text-gray-700">
-                  {productDetails?.product?.averageRating}
-                  <span className="sr-only"> out of 5 stars</span>
+                  {product?.reviews?.length > 0 ? product?.averageRating : 0}
+                  {/* <span className="sr-only"> out of 5 stars</span> */}
                 </p>
                 <div className="ml-1 flex items-center">
                   {[0, 1, 2, 3, 4].map((rating) => (
                     <StarIcon
                       key={rating}
                       className={classNames(
-                        productDetails?.product?.averageRating > rating
+                        +product?.averageRating > rating
                           ? "text-yellow-400"
                           : "text-gray-200",
                         "h-5 w-5 flex-shrink-0"
@@ -392,7 +392,7 @@ export default function Product() {
           </h2>
 
           <div className="mt-6 space-y-10 divide-y divide-gray-200 border-t border-b border-gray-200 pb-10">
-            {productDetails?.product?.reviews.map((review) => (
+            {product?.reviews.map((review) => (
               <div
                 key={review._id}
                 className="pt-10 lg:grid lg:grid-cols-12 lg:gap-x-8">
@@ -422,11 +422,7 @@ export default function Product() {
                     <h3 className="text-sm font-medium text-gray-900">
                       {review?.message}
                     </h3>
-
-                    <div
-                      className="mt-3 space-y-6 text-sm text-gray-500"
-                      dangerouslySetInnerHTML={{ __html: review.content }}
-                    />
+                  
                   </div>
                 </div>
 
