@@ -1,6 +1,17 @@
 import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { createReviewAction } from "../../../redux/slices/reviews/reviewsSlice";
+import { useParams } from "react-router-dom";
+import SuccessMsg from "../../SuccessMsg/SuccessMsg";
+import ErrorMsg from "../../ErrorMsg/ErrorMsg";
+import LoadingComponent from "../../LoadingComp/LoadingComponent";
 
 export default function AddReview() {
+
+  const dispatch = useDispatch();
+  // get params
+  const { id } = useParams();
+
   //---form data---
   const [formData, setFormData] = useState({
     rating: "",
@@ -15,12 +26,20 @@ export default function AddReview() {
   //onSubmit
   const handleOnSubmit = (e) => {
     e.preventDefault();
-    console.log(formData);
-    
+    dispatch(createReviewAction({
+      id,
+      message: formData?.message,
+      rating: formData?.rating
+    }))
   };
+
+  // get data from store
+  const { loading, error, isAdded } = useSelector(state => state?.reviews);
 
   return (
     <>
+      {error && <ErrorMsg message={error?.message} />}
+      {isAdded && <SuccessMsg message="Thanks for the review" />}
       <div className="flex min-h-full flex-col justify-center py-12 sm:px-6 lg:px-8">
         <div className="sm:mx-auto sm:w-full sm:max-w-md">
           <h2 className="mt-6 text-center text-3xl font-bold tracking-tight text-gray-900">
@@ -77,11 +96,14 @@ export default function AddReview() {
                 </div>
               </div>
               <div>
-                <button
-                  type="submit"
-                  className="flex w-full justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
-                  Add New Review
-                </button>
+                {
+                  loading ? <LoadingComponent /> :
+                    <button
+                      type="submit"
+                      className="flex w-full justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+                      Add New Review
+                    </button>
+                }
               </div>
 
               <div>
