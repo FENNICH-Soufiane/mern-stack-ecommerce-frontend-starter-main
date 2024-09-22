@@ -2,11 +2,23 @@ import { Link } from "react-router-dom";
 import ErrorMsg from "../../ErrorMsg/ErrorMsg";
 import LoadingComponent from "../../LoadingComp/LoadingComponent";
 import NoDataFound from "../../NoDataFound/NoDataFound";
+import { fetchProductsAction } from "../../../redux/slices/products/productSlices";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
+import baseURL from "../../../utils/baseURL";
 
 export default function ManageStocks() {
-  //Selector
-  let products, loading, error;
 
+  let productUrl = `${baseURL}/products`;
+  // dispatch
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(fetchProductsAction({url: productUrl}));
+  }, [dispatch]);
+  // get data from store
+  const {products: {products}, loading, error} = useSelector(state => state?.products);
+
+console.log(products)
   //delete product handler
   const deleteProductHandler = (id) => {};
   return (
@@ -90,13 +102,13 @@ export default function ManageStocks() {
                   <tbody className="divide-y divide-gray-200 bg-white">
                     {/* loop here */}
                     {products?.map((product) => (
-                      <tr key={product._id}>
+                      <tr key={product?._id}>
                         <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm sm:pl-6">
                           <div className="flex items-center">
                             <div className="h-10 w-10 flex-shrink-0">
                               <img
                                 className="h-10 w-10 rounded-full"
-                                src={product?.image}
+                                src={product?.files[0]}
                                 alt={product?.name}
                               />
                             </div>
