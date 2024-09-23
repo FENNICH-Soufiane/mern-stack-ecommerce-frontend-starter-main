@@ -6,6 +6,7 @@ import LoadingComponent from "../../LoadingComp/LoadingComponent";
 import ErrorMsg from "../../ErrorMsg/ErrorMsg";
 import SuccessMsg from "../../SuccessMsg/SuccessMsg";
 import NoDataFound from "../../NoDataFound/NoDataFound";
+import { Link } from "react-router-dom";
 
 const people = [
   {
@@ -104,9 +105,9 @@ export default function OrdersList() {
                         {order.totalPrice}
                       </td>
                       <td className="py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
-                        <a href="#" className="text-indigo-600 hover:text-indigo-900">
+                        <Link to={`/admin/orders/${order?._id}`} className="text-indigo-600 hover:text-indigo-900">
                           Edit<span className="sr-only">, {order.name}</span>
-                        </a>
+                        </Link>
                       </td>
                     </tr>
                   ))}
