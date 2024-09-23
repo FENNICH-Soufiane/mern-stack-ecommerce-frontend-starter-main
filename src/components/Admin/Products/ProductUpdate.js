@@ -30,7 +30,6 @@ export default function ProductUpdate() {
     dispatch(fetchProductAction(id))
   }, [id, dispatch]);
 
-
   // Sizes
   const sizes = ["S", "M", "L", "XL", "XXL", "XXXL"];
   const [sizeOption, setSizeOption] = useState([]);
@@ -82,44 +81,28 @@ export default function ProductUpdate() {
     };
   });
 
-
   // get data from store
-  const { product: { product }, isUpdated, loading, error } = useSelector((state) => state?.products);
+  const { product , isUpdated, loading, error } = useSelector((state) => state?.products);
   console.log(product);
-
-
-
 
   //onChange
   const handleOnChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-
   //---form data---
   const [formData, setFormData] = useState({});
-  //   name: product?.name,
-  //   description: product?.description,
-  //   category: "",
-  //   sizes: "",
-  //   brand: "",
-  //   colors: "",
-  //   price: product?.price,
-  //   totalQty: product?.totalQty,
-  // });
-
-
   useEffect(() => {
     if (product) {
       setFormData({
-        name: product?.name || "",
-        description: product?.description || "",
+        name: product?.product?.name || "",
+        description: product?.produxt?.description || "",
         category: "",
         sizes: "",
         brand: "",
         colors: "",
-        price: product?.price || "",
-        totalQty: product?.totalQty || "",
+        price: product?.product?.price || "",
+        totalQty: product?.product?.totalQty || "",
       });
     }
   }, [product]);
@@ -152,6 +135,7 @@ export default function ProductUpdate() {
 
   return (
     <>
+      {error && <ErrorMsg message={error?.message} />}
       {isUpdated && <SuccessMsg message="Product Updated Successfully" />}
       <div className="flex min-h-full flex-col justify-center py-12 sm:px-6 lg:px-8">
         <div className="sm:mx-auto sm:w-full sm:max-w-md">
