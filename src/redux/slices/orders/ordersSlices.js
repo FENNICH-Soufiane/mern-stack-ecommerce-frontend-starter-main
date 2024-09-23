@@ -143,6 +143,35 @@ export const fetchOderAction = createAsyncThunk(
 );
 
 
+//Update order
+export const updateOrderAction = createAsyncThunk(
+   "order/update-order",
+   async (payload, { rejectWithValue, getState, dispatch }) => {
+      try {
+         const { status, id } = payload;
+         //token
+         const token = getState()?.users?.userAuth?.userInfo?.token;
+         const config = {
+            headers: {
+               Authorization: `Bearer ${token}`,
+            },
+         };
+         //request
+         const { data } = await axios.put(
+            `${baseURL}/orders/update/${id}`,
+            {
+               status,
+            },
+            config
+         );
+         return data;
+      } catch (error) {
+         return rejectWithValue(error?.response?.data);
+      }
+   }
+);
+
+
 //slice
 const ordersSlice = createSlice({
    name: "orders",
@@ -201,6 +230,19 @@ const ordersSlice = createSlice({
       builder.addCase(OrdersStatsAction.rejected, (state, action) => {
          state.loading = false;
          state.stats = null;
+         state.error = action.payload;
+      });
+      // update status of order
+      builder.addCase(updateOrderAction.pending, (state) => {
+         state.loading = true;
+      });
+      builder.addCase(updateOrderAction.fulfilled, (state, action) => {
+         state.loading = false;
+         state.order = action.payload;
+      });
+      builder.addCase(updateOrderAction.rejected, (state, action) => {
+         state.loading = false;
+         state.order = null;
          state.error = action.payload;
       });
       //reset error
