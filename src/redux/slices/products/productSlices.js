@@ -61,10 +61,32 @@ export const createProductAction = createAsyncThunk(
 
 
 //fetch product action
+// export const fetchProductsAction = createAsyncThunk(
+//    "product/list",
+//    async ({ url }, { rejectWithValue, getState, dispatch }) => {
+//       console.log(url);
+//       try {
+//          const token = getState()?.users?.userAuth?.userInfo?.token;
+//          const config = {
+//             headers: {
+//                Authorization: `Bearer ${token}`,
+//             },
+//          };
+//          const { data } = await axios.get(
+//             `${url}`,
+//             config
+//          );
+//          return data;
+//       } catch (error) { return rejectWithValue(error?.response?.data); }
+//    }
+// );
+
+
+
+//fetch product action
 export const fetchProductsAction = createAsyncThunk(
    "product/list",
-   async ({url}, { rejectWithValue, getState, dispatch }) => {
-      console.log(url);
+   async (_, { rejectWithValue, getState }) => {  // On n'a plus besoin de l'argument { url }
       try {
          const token = getState()?.users?.userAuth?.userInfo?.token;
          const config = {
@@ -72,14 +94,16 @@ export const fetchProductsAction = createAsyncThunk(
                Authorization: `Bearer ${token}`,
             },
          };
-         const { data } = await axios.get(
-            `${url}`,
-            config
-         );
+         // Utilisation de productUrl directement
+         const productUrl = `${baseURL}/products`; 
+         const { data } = await axios.get(productUrl, config);
          return data;
-      } catch (error) { return rejectWithValue(error?.response?.data); }
+      } catch (error) {
+         return rejectWithValue(error?.response?.data);
+      }
    }
 );
+
 
 
 //fetch product details action
@@ -119,7 +143,7 @@ const productSlices = createSlice({
          state.loading = false;
          state.products = action.payload;
          state.isAdded = true;
-      });    
+      });
       builder.addCase(createProductAction.rejected, (state, action) => {
          state.loading = false;
          state.products = null;
@@ -127,22 +151,32 @@ const productSlices = createSlice({
          state.error = action.payload;
       });
       // reset success
-      builder.addCase(resetSuccessAction.pending, (state, action) => {
-         state.isAdded = false
-      });
+      // builder.addCase(resetSuccessAction.pending, (state, action) => {
+      //    state.isAdded = false
+      // });
       // reset error
-      builder.addCase(resetErrAction.pending, (state, action) => {
-         state.error = null
+      // builder.addCase(resetErrAction.pending, (state, action) => {
+      //    state.error = null
+      // });
+      // Reset err
+      builder.addCase(resetErrAction.pending, (state) => {
+         state.isAdded = false;
+         state.error = null;
       });
-       //fetch all
-       builder.addCase(fetchProductsAction.pending, (state) => {
+      // Reset success
+      builder.addCase(resetSuccessAction.pending, (state) => {
+         state.error = null;
+         state.isAdded = false;
+      });
+      //fetch all
+      builder.addCase(fetchProductsAction.pending, (state) => {
          state.loading = true;
       });
       builder.addCase(fetchProductsAction.fulfilled, (state, action) => {
          state.loading = false;
          state.products = action.payload;
          state.isAdded = true;
-      });    
+      });
       builder.addCase(fetchProductsAction.rejected, (state, action) => {
          state.loading = false;
          state.products = null;
@@ -157,7 +191,7 @@ const productSlices = createSlice({
          state.loading = false;
          state.product = action.payload;
          state.isAdded = true;
-      });    
+      });
       builder.addCase(fetchProductAction.rejected, (state, action) => {
          state.loading = false;
          state.product = null;

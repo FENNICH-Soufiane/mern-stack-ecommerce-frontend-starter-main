@@ -18,13 +18,13 @@ export default function OrderPayment() {
   const dispatch = useDispatch();
   // dispatch
   
-
-  // get cart items from store
-  const { cartItems } = useSelector((state) => state?.carts);
-
   useEffect(() => {
     dispatch(getCartItemsFromLocalStorageAction());
   }, [dispatch]);
+
+  // get cart items from store
+  const { cartItems } = useSelector((state) => state?.carts);
+  console.log(cartItems);
 
   const calculateTotalDiscountedPrice = () => { };
 
@@ -37,17 +37,41 @@ export default function OrderPayment() {
   const user = profile?.user;
   // place order action
   const shippingAddress = user?.shippingAddress;
-  const placeOrderHandler = () => {
-    dispatch(placeOrderAction({
-      orderItems: cartItems,
-      shippingAddress: shippingAddress,
-      totalPrice: sumTotalPrice
-    }));
-    // Vider le panier
-  dispatch(emptyCart());
-    // empty cart items
-    localStorage?.removeItem("cartItems")
-  }
+  // const placeOrderHandler = () => {
+  //   dispatch(placeOrderAction({
+  //     orderItems: cartItems,
+  //     shippingAddress: shippingAddress,
+  //     totalPrice: sumTotalPrice
+  //   }));
+  //   // Vider le panier
+  // dispatch(emptyCart());
+  //   // empty cart items
+  //   localStorage?.removeItem("cartItems")
+  // }
+
+
+  const placeOrderHandler = async () => {
+    const resultAction = await dispatch(
+      placeOrderAction({
+        orderItems: cartItems,
+        shippingAddress: shippingAddress,
+        totalPrice: sumTotalPrice,
+      })
+    );
+  
+    if (placeOrderAction.fulfilled.match(resultAction)) {
+      // Rediriger vers la page de paiement
+      window.location.href = resultAction.payload.url;
+  
+      // Vider le panier après la redirection
+      dispatch(emptyCart());
+      localStorage.removeItem("cartItems");
+    } else {
+      // Gérer les erreurs si nécessaire
+      console.error(resultAction.payload);
+    }
+  };
+
 
   const { loading: orderLaoding, error: orderErr } = useSelector(state => state?.orders);
 

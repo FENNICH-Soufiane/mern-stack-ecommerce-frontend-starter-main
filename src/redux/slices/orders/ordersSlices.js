@@ -15,35 +15,70 @@ const initialState = {
 };
 
 //create order action
+// export const placeOrderAction = createAsyncThunk(
+//    "orders/place-order",
+//    async (payload, { rejectWithValue, getState, dispatch }) => {
+//       try {
+//          const { orderItems, shippingAddress, totalPrice } = payload;
+//          //token
+//          const token = getState()?.users?.userAuth?.userInfo?.token;
+//          const config = {
+//             headers: {
+//                Authorization: `Bearer ${token}`,
+//             },
+//          };
+//          //request
+//          const { data } = await axios.post(
+//             `${baseURL}/orders`,
+//             {
+//                orderItems,
+//                shippingAddress,
+//                totalPrice,
+//             },
+//             config
+//          );
+//          return window.open(data?.url);
+//          // return data;
+//       } catch (error) {
+//          return rejectWithValue(error?.response?.data);
+//       }
+//    }
+// );
+
+
+
 export const placeOrderAction = createAsyncThunk(
    "orders/place-order",
    async (payload, { rejectWithValue, getState, dispatch }) => {
-      try {
-         const { orderItems, shippingAddress, totalPrice } = payload;
-         //token
-         const token = getState()?.users?.userAuth?.userInfo?.token;
-         const config = {
-            headers: {
-               Authorization: `Bearer ${token}`,
-            },
-         };
-         //request
-         const { data } = await axios.post(
-            `${baseURL}/orders`,
-            {
-               orderItems,
-               shippingAddress,
-               totalPrice,
-            },
-            config
-         );
-         return window.open(data?.url);
-         // return data;
-      } catch (error) {
-         return rejectWithValue(error?.response?.data);
-      }
+     try {
+       const { orderItems, shippingAddress, totalPrice } = payload;
+       // Token
+       const token = getState()?.users?.userAuth?.userInfo?.token;
+       const config = {
+         headers: {
+           Authorization: `Bearer ${token}`,
+         },
+       };
+       // Requête
+       const { data } = await axios.post(
+         `${baseURL}/orders`,
+         {
+           orderItems,
+           shippingAddress,
+           totalPrice,
+         },
+         config
+       );
+       // Retourner les données
+       return data;
+     } catch (error) {
+       return rejectWithValue(error?.response?.data);
+     }
    }
-);
+ );
+ 
+
+
 
 
 //fetch orders action
