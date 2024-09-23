@@ -187,15 +187,7 @@ const productSlices = createSlice({
          state.isUpdated = false;
          state.error = action.payload;
       });
-      builder.addCase(resetErrAction.pending, (state) => {
-         state.isAdded = false;
-         state.error = null;
-      });
-      // Reset success
-      builder.addCase(resetSuccessAction.pending, (state) => {
-         state.error = null;
-         state.isAdded = false;
-      });
+      
       //fetch all
       builder.addCase(fetchProductsAction.pending, (state) => {
          state.loading = true;
@@ -225,6 +217,15 @@ const productSlices = createSlice({
          state.product = null;
          state.isAdded = false;
          state.error = action.payload;
+      });
+      builder.addCase(resetErrAction.pending, (state) => {
+         state.isAdded = false;
+         state.error = null;
+      });
+      // Reset success
+      builder.addCase(resetSuccessAction.pending, (state) => {
+         state.error = null;
+         state.isAdded = false;
       });
    }
 });

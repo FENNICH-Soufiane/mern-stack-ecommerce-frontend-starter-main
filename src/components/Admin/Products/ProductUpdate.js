@@ -7,10 +7,11 @@ import makeAnimated from "react-select/animated";
 import ErrorMsg from "../../ErrorMsg/ErrorMsg";
 import LoadingComponent from "../../LoadingComp/LoadingComponent";
 import SuccessMsg from "../../SuccessMsg/SuccessMsg";
-import { createProductAction } from "../../../redux/slices/products/productSlices";
+import { createProductAction, fetchProductAction, updateProductAction } from "../../../redux/slices/products/productSlices";
 import { fetchCategoriesAction } from "../../../redux/slices/categories/categoriesSlices";
 import { fetchBrandsAction } from "../../../redux/slices/categories/brandsSlices";
 import { fetchColorsAction } from "../../../redux/slices/categories/colorsSlices";
+import { useParams } from "react-router-dom";
 
 
 
@@ -20,6 +21,16 @@ const animatedComponents = makeAnimated();
 export default function ProductUpdate() {
 
   const dispatch = useDispatch();
+  // get id from useParams
+  const { id } = useParams();
+  console.log(id);
+
+  // fetch single product
+  useEffect(() => {
+    dispatch(fetchProductAction(id))
+  }, [id, dispatch]);
+
+
   // Sizes
   const sizes = ["S", "M", "L", "XL", "XXL", "XXXL"];
   const [sizeOption, setSizeOption] = useState([]);
@@ -71,35 +82,56 @@ export default function ProductUpdate() {
     };
   });
 
-  
-  
 
-  //---form data---
-  const [formData, setFormData] = useState({
-    name: "",
-    description: "",
-    category: "",
-    sizes: "",
-    brand: "",
-    colors: "",
-    price: "",
-    totalQty: "",
-  });
+  // get data from store
+  const { product: { product }, isUpdated, loading, error } = useSelector((state) => state?.products);
+  console.log(product);
+
+
+
 
   //onChange
   const handleOnChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const {product, isAdded, loading, error} = useSelector((state) => state?.products)
+
+  //---form data---
+  const [formData, setFormData] = useState({});
+  //   name: product?.name,
+  //   description: product?.description,
+  //   category: "",
+  //   sizes: "",
+  //   brand: "",
+  //   colors: "",
+  //   price: product?.price,
+  //   totalQty: product?.totalQty,
+  // });
+
+
+  useEffect(() => {
+    if (product) {
+      setFormData({
+        name: product?.name || "",
+        description: product?.description || "",
+        category: "",
+        sizes: "",
+        brand: "",
+        colors: "",
+        price: product?.price || "",
+        totalQty: product?.totalQty || "",
+      });
+    }
+  }, [product]);
 
   //onSubmit
   const handleOnSubmit = (e) => {
     e.preventDefault();
-    
+
     // dispatch
-    dispatch(createProductAction({
+    dispatch(updateProductAction({
       ...formData,
+      id,
       colors: colorsOption?.map((color) => color?.label),
       sizes: sizeOption?.map((size) => size?.label),
     }));
@@ -120,7 +152,7 @@ export default function ProductUpdate() {
 
   return (
     <>
-      {isAdded && <SuccessMsg message="Product Added Successfully" />}
+      {isUpdated && <SuccessMsg message="Product Updated Successfully" />}
       <div className="flex min-h-full flex-col justify-center py-12 sm:px-6 lg:px-8">
         <div className="sm:mx-auto sm:w-full sm:max-w-md">
           <h2 className="mt-6 text-center text-3xl font-bold tracking-tight text-gray-900">
@@ -231,7 +263,7 @@ export default function ProductUpdate() {
                 />
               </div>
 
-              
+
 
               {/* price */}
               <div>
@@ -286,7 +318,6 @@ export default function ProductUpdate() {
                   <LoadingComponent />
                 ) : (
                   <button
-                  disabled
                     type="submit"
                     className="flex w-full justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
                     Update Product
