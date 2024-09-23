@@ -53,7 +53,7 @@ export default function OrdersList() {
                 <th
                   scope="col"
                   className="hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 lg:table-cell">
-                  Payment Method
+                  Payment Status
                 </th>
                 <th
                   scope="col"
@@ -82,7 +82,7 @@ export default function OrdersList() {
               </tr>
             </thead>
             {
-              loading ? <LoadingComponent /> : orders?.length <=0 ? <NoDataFound /> : 
+              loading ? <LoadingComponent /> : orders?.length <= 0 ? <NoDataFound /> :
                 <tbody className="divide-y divide-gray-200 bg-white">
                   {orders?.map((order) => (
                     <tr key={order?._id}>
@@ -90,7 +90,13 @@ export default function OrdersList() {
                         {order?.orderNumber}
                       </td>
                       <td className="hidden px-3 py-4 text-sm text-gray-500 lg:table-cell">
-                        {order?.paymentMethod}
+                        {order.paymentStatus === "Not paid" ? (
+                          <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-600 text-gray-300">
+                            {order.paymentStatus}
+                          </span>
+                        ) : (
+                          order.paymentStatus
+                        )}
                       </td>
                       <td className="hidden px-3 py-4 text-sm text-gray-500 lg:table-cell">
                         {new Date(order?.createdAt).toLocaleDateString()}
@@ -105,9 +111,18 @@ export default function OrdersList() {
                         {order.totalPrice}
                       </td>
                       <td className="py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
-                        <Link to={`/admin/orders/${order?._id}`} className="text-indigo-600 hover:text-indigo-900">
-                          Edit<span className="sr-only">, {order.name}</span>
-                        </Link>
+                        {
+                          order?.paymentStatus !== 'Not paid' ?
+                            <Link to={`/admin/orders/${order?._id}`} style={{ cursor: 'not-allowed' }} className="text-gray-300">
+                              Edit
+                              <span className="sr-only">, {order.name}</span>
+                            </Link>
+                            :
+                            <Link to={`/admin/orders/${order?._id}`} className="text-indigo-600 hover:text-indigo-900">
+                              Edit
+                              <span className="sr-only">, {order.name}</span>
+                            </Link>
+                        }
                       </td>
                     </tr>
                   ))}
