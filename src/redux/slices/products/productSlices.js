@@ -60,28 +60,50 @@ export const createProductAction = createAsyncThunk(
 );
 
 
-//fetch product action
-// export const fetchProductsAction = createAsyncThunk(
-//    "product/list",
-//    async ({ url }, { rejectWithValue, getState, dispatch }) => {
-//       console.log(url);
-//       try {
-//          const token = getState()?.users?.userAuth?.userInfo?.token;
-//          const config = {
-//             headers: {
-//                Authorization: `Bearer ${token}`,
-//             },
-//          };
-//          const { data } = await axios.get(
-//             `${url}`,
-//             config
-//          );
-//          return data;
-//       } catch (error) { return rejectWithValue(error?.response?.data); }
-//    }
-// );
+//create product action
+export const updateProductAction = createAsyncThunk(
+   "product/update",
+   async (payload, { rejectWithValue, getState, dispatch }) => {
+      console.log(payload);
+      try {
+         const {
+            name,
+            description,
+            category,
+            sizes,
+            brand,
+            colors,
+            price,
+            totalQty,
+            id,
+         } = payload;
+         const token = getState()?.users?.userAuth?.userInfo?.token;
+         const config = {
+            headers: {
+               Authorization: `Bearer ${token}`,
+            },
+         };
 
-
+         const { data } = await axios.put(
+            `${baseURL}/products/${id}`,
+            {
+               name,
+               description,
+               category,
+               sizes,
+               brand,
+               colors,
+               price,
+               totalQty,
+            },
+            config
+         );
+         return data;
+      } catch (error) {
+         return rejectWithValue(error?.response?.data);
+      }
+   }
+);
 
 //fetch product action
 export const fetchProductsAction = createAsyncThunk(
@@ -95,7 +117,7 @@ export const fetchProductsAction = createAsyncThunk(
             },
          };
          // Utilisation de productUrl directement
-         const productUrl = `${baseURL}/products`; 
+         const productUrl = `${baseURL}/products`;
          const { data } = await axios.get(productUrl, config);
          return data;
       } catch (error) {
@@ -150,15 +172,21 @@ const productSlices = createSlice({
          state.isAdded = false;
          state.error = action.payload;
       });
-      // reset success
-      // builder.addCase(resetSuccessAction.pending, (state, action) => {
-      //    state.isAdded = false
-      // });
-      // reset error
-      // builder.addCase(resetErrAction.pending, (state, action) => {
-      //    state.error = null
-      // });
-      // Reset err
+      //update
+      builder.addCase(updateProductAction.pending, (state) => {
+         state.loading = true;
+      });
+      builder.addCase(updateProductAction.fulfilled, (state, action) => {
+         state.loading = false;
+         state.product = action.payload;
+         state.isUpdated = true;
+      });
+      builder.addCase(updateProductAction.rejected, (state, action) => {
+         state.loading = false;
+         state.product = null;
+         state.isUpdated = false;
+         state.error = action.payload;
+      });
       builder.addCase(resetErrAction.pending, (state) => {
          state.isAdded = false;
          state.error = null;
