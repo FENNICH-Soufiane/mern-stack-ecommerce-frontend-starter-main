@@ -50,35 +50,53 @@ const initialState = {
 export const placeOrderAction = createAsyncThunk(
    "orders/place-order",
    async (payload, { rejectWithValue, getState, dispatch }) => {
-     try {
-       const { orderItems, shippingAddress, totalPrice } = payload;
-       // Token
-       const token = getState()?.users?.userAuth?.userInfo?.token;
-       const config = {
-         headers: {
-           Authorization: `Bearer ${token}`,
-         },
-       };
-       // Requête
-       const { data } = await axios.post(
-         `${baseURL}/orders`,
-         {
-           orderItems,
-           shippingAddress,
-           totalPrice,
-         },
-         config
-       );
-       // Retourner les données
-       return data;
-     } catch (error) {
-       return rejectWithValue(error?.response?.data);
-     }
+      try {
+         const { orderItems, shippingAddress, totalPrice } = payload;
+         // Token
+         const token = getState()?.users?.userAuth?.userInfo?.token;
+         const config = {
+            headers: {
+               Authorization: `Bearer ${token}`,
+            },
+         };
+         // Requête
+         const { data } = await axios.post(
+            `${baseURL}/orders`,
+            {
+               orderItems,
+               shippingAddress,
+               totalPrice,
+            },
+            config
+         );
+         // Retourner les données
+         return data;
+      } catch (error) {
+         return rejectWithValue(error?.response?.data);
+      }
    }
- );
- 
+);
 
 
+//Get orders stats
+export const OrdersStatsAction = createAsyncThunk(
+   "orders/statistics",
+   async (payload, { rejectWithValue, getState, dispatch }) => {
+      try {
+         const token = getState()?.users?.userAuth?.userInfo?.token;
+         const config = {
+            headers: {
+               Authorization: `Bearer ${token}`,
+            },
+         };
+
+         const { data } = await axios.get(`${baseURL}/orders/sales/stats`, config);
+         return data;
+      } catch (error) {
+         return rejectWithValue(error?.response?.data);
+      }
+   }
+);
 
 
 //fetch orders action
@@ -170,6 +188,19 @@ const ordersSlice = createSlice({
       builder.addCase(fetchOderAction.rejected, (state, action) => {
          state.loading = false;
          state.order = null;
+         state.error = action.payload;
+      });
+      //stats
+      builder.addCase(OrdersStatsAction.pending, (state) => {
+         state.loading = true;
+      });
+      builder.addCase(OrdersStatsAction.fulfilled, (state, action) => {
+         state.loading = false;
+         state.stats = action.payload;
+      });
+      builder.addCase(OrdersStatsAction.rejected, (state, action) => {
+         state.loading = false;
+         state.stats = null;
          state.error = action.payload;
       });
       //reset error
