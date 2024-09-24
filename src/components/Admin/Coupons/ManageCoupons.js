@@ -1,13 +1,15 @@
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
 import ErrorMsg from "../../ErrorMsg/ErrorMsg";
 import LoadingComponent from "../../LoadingComp/LoadingComponent";
 import NoDataFound from "../../NoDataFound/NoDataFound";
-import { fetchCouponsAction } from "../../../redux/slices/coupons/CouponSlice";
+import { deleteCouponAction, fetchCouponsAction } from "../../../redux/slices/coupons/CouponSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 
 export default function ManageCoupons() {
+  // params
+  const { id } = useParams();
   // dispatch
   const dispatch = useDispatch();
   useEffect(() => {
@@ -20,7 +22,9 @@ export default function ManageCoupons() {
 
   //---deleteHandler---
 
-  const deleteCouponHandler = (id) => { };
+  const deleteCouponHandler = (id) => {
+    dispatch(deleteCouponAction(id));
+  };
 
   return (
     <div className="px-4 sm:px-6 lg:px-8">

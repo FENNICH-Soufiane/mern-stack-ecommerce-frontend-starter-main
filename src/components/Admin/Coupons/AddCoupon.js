@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import LoadingComponent from "../../LoadingComp/LoadingComponent";
@@ -6,11 +6,18 @@ import ErrorMsg from "../../ErrorMsg/ErrorMsg";
 import SuccessMsg from "../../SuccessMsg/SuccessMsg";
 import { createCouponAction } from "../../../redux/slices/coupons/CouponSlice";
 import { useDispatch, useSelector } from "react-redux";
-
+import { resetSuccessAction } from "../../../redux/slices/users/globalActions/globalActions";
+import { resetIsAdded } from "../../../redux/slices/coupons/CouponSlice";
 
 export default function AddCoupon() {
   // dispatch
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    // Réinitialiser isAdded dès qu'on arrive sur la page
+    dispatch(resetSuccessAction());
+  }, []);
+  
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
 
@@ -41,6 +48,10 @@ export default function AddCoupon() {
   };
   //---coupon from store---
   const { loading, isAdded, error, coupon } = useSelector(state => state?.coupons);
+
+  
+
+
   return (
     <>
       {error && <ErrorMsg message={error?.message} />}

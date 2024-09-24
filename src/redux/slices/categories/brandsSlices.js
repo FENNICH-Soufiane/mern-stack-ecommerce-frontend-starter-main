@@ -79,7 +79,7 @@ const brandsSlices = createSlice({
       builder.addCase(fetchBrandsAction.fulfilled, (state, action) => {
          state.loading = false;
          state.brands = action.payload;
-         state.isAdded = true;
+         // state.isAdded = true;
       });
       builder.addCase(fetchBrandsAction.rejected, (state, action) => {
          state.loading = false;

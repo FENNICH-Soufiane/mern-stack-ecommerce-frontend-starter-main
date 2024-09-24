@@ -195,7 +195,7 @@ const productSlices = createSlice({
       builder.addCase(fetchProductsAction.fulfilled, (state, action) => {
          state.loading = false;
          state.products = action.payload;
-         state.isAdded = true;
+         // state.isAdded = true;
       });
       builder.addCase(fetchProductsAction.rejected, (state, action) => {
          state.loading = false;
@@ -210,7 +210,7 @@ const productSlices = createSlice({
       builder.addCase(fetchProductAction.fulfilled, (state, action) => {
          state.loading = false;
          state.product = action.payload;
-         state.isAdded = true;
+         // state.isAdded = true;
       });
       builder.addCase(fetchProductAction.rejected, (state, action) => {
          state.loading = false;

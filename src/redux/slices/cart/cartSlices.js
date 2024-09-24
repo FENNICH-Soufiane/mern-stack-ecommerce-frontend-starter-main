@@ -113,7 +113,7 @@ const cartSlice = createSlice({
       builder.addCase(getCartItemsFromLocalStorageAction.fulfilled, (state, action) => {
          state.loading = false;
          state.cartItems = action.payload;
-         state.isAdded = true;
+         // state.isAdded = true;
       });
       builder.addCase(getCartItemsFromLocalStorageAction.rejected, (state, action) => {
          state.loading = false;
