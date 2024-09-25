@@ -7,6 +7,7 @@ import logo from "./logo3.png";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchCategoriesAction } from "../../redux/slices/categories/categoriesSlices";
 import { getCartItemsFromLocalStorageAction } from "../../redux/slices/cart/cartSlices";
+import { logoutAction } from "../../redux/slices/users/userSlice";
 
 export default function Navbar() {
   const dispatch = useDispatch();
@@ -32,6 +33,13 @@ export default function Navbar() {
     dispatch(getCartItemsFromLocalStorageAction());
   }, [dispatch]);
   const { cartItems } = useSelector((state) => state?.carts);
+
+  //logout handler
+  const logoutHandler = () => {
+    dispatch(logoutAction());
+    //reload
+    window.location.reload();
+  };
 
   return (
     <div className="bg-white">
@@ -264,6 +272,23 @@ export default function Navbar() {
                                 className="-m-2 p-2 text-gray-400 hover:text-gray-500">
                                 <UserIcon className="h-6 w-6" aria-hidden="true" />
                               </Link>
+                              {/* logout */}
+                            <button onClick={logoutHandler}>
+                              <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                strokeWidth={1.5}
+                                stroke="currentColor"
+                                className="w-6 h-6 text-gray-500"
+                              >
+                                <path
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l-3 3m0 0l3 3m-3-3h12.75"
+                                />
+                              </svg>
+                            </button>
                             </>
                           }
                         </div>
