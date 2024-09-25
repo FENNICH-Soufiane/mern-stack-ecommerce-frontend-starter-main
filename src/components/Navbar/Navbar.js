@@ -1,7 +1,7 @@
 import { Fragment, useEffect, useState } from "react";
 import { Dialog, Popover, Tab, Transition } from "@headlessui/react";
 import { Bars3Icon, ShoppingCartIcon, UserIcon, XMarkIcon, } from "@heroicons/react/24/outline";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import baseURL from "../../utils/baseURL";
 import logo from "./logo3.png";
 import { useDispatch, useSelector } from "react-redux";
@@ -10,6 +10,7 @@ import { getCartItemsFromLocalStorageAction } from "../../redux/slices/cart/cart
 import { logoutAction } from "../../redux/slices/users/userSlice";
 
 export default function Navbar() {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(fetchCategoriesAction());
@@ -37,8 +38,9 @@ export default function Navbar() {
   //logout handler
   const logoutHandler = () => {
     dispatch(logoutAction());
+    navigate('/');
     //reload
-    window.location.reload();
+    // window.location.reload();
   };
 
   return (
