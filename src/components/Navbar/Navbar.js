@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchCategoriesAction } from "../../redux/slices/categories/categoriesSlices";
 import { getCartItemsFromLocalStorageAction } from "../../redux/slices/cart/cartSlices";
 import { logoutAction } from "../../redux/slices/users/userSlice";
+import { fetchCouponsAction } from "../../redux/slices/coupons/CouponSlice";
 
 export default function Navbar() {
   const navigate = useNavigate();
@@ -17,7 +18,7 @@ export default function Navbar() {
   }, [dispatch])
 
   // get data from store
-  const {categories} = useSelector((state) => state?.categories)
+  const { categories } = useSelector((state) => state?.categories)
   const categoriesToDisplay = categories?.categories?.slice(0, 3);
 
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -43,6 +44,18 @@ export default function Navbar() {
     // window.location.reload();
   };
 
+  //coupon
+  useEffect(() => {
+    dispatch(fetchCouponsAction());
+  }, [dispatch]);
+  //get coupons
+  const { coupons, loading, error } = useSelector((state) => state?.coupons);
+  //Get current coupon
+  const currentCoupon = coupons
+    ? coupons?.coupons?.[coupons?.coupons?.length - 1]
+    : console.log(currentCoupon);
+    // console.log(coupons);
+    
   return (
     <div className="bg-white">
       {/* Mobile menu */}
@@ -160,10 +173,10 @@ export default function Navbar() {
       <header className="relative z-10">
         <nav aria-label="Top">
           {/* Top navigation  desktop*/}
-          <div className="bg-gray-900">
+          <div className="bg-yellow-900">
             <div className="mx-auto flex h-10 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
               <p className="flex-1 text-center text-sm font-medium text-white lg:flex-none">
-                Get free delivery on orders over $100
+                {currentCoupon ? `${currentCoupon?.code} - ${currentCoupon?.discount}%` : "No Flash sale at moment"}
               </p>
               {
                 !isLoggedIn && <>
@@ -275,22 +288,22 @@ export default function Navbar() {
                                 <UserIcon className="h-6 w-6" aria-hidden="true" />
                               </Link>
                               {/* logout */}
-                            <button onClick={logoutHandler}>
-                              <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                strokeWidth={1.5}
-                                stroke="currentColor"
-                                className="w-6 h-6 text-gray-500"
-                              >
-                                <path
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                  d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l-3 3m0 0l3 3m-3-3h12.75"
-                                />
-                              </svg>
-                            </button>
+                              <button onClick={logoutHandler}>
+                                <svg
+                                  xmlns="http://www.w3.org/2000/svg"
+                                  fill="none"
+                                  viewBox="0 0 24 24"
+                                  strokeWidth={1.5}
+                                  stroke="currentColor"
+                                  className="w-6 h-6 text-gray-500"
+                                >
+                                  <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l-3 3m0 0l3 3m-3-3h12.75"
+                                  />
+                                </svg>
+                              </button>
                             </>
                           }
                         </div>
@@ -310,7 +323,7 @@ export default function Navbar() {
                             aria-hidden="true"
                           />
                           <span className="ml-2 text-sm font-medium text-gray-700 group-hover:text-gray-800">
-                          {cartItems?.length > 0 ? cartItems?.length : 0}
+                            {cartItems?.length > 0 ? cartItems?.length : 0}
                           </span>
                         </Link>
                       </div>
