@@ -37,6 +37,7 @@ import UpdateOrders from "./components/Admin/Orders/UpdateOrders";
 import ColorsList from "./components/Admin/Categories/ColorsList";
 import { getUserProfileAction } from "./redux/slices/users/userSlice";
 import { useDispatch, useSelector } from "react-redux";
+import AuthRoute from "./components/AuthRoute/AuthRoute";
 
 const App = () => {
   //dispatch
@@ -55,7 +56,7 @@ const App = () => {
       <Routes>
         {/* nested route */}
         <Route path="admin" element={<AdminRoutes><AdminDashboard /></AdminRoutes>}>
-          {/* products */} 
+          {/* products */}
           <Route path="" element={<OrdersList />} />
           <Route path="add-product" element={<AddProduct />} />
           <Route path="manage-products" element={<ManageStocks />} />
@@ -97,7 +98,11 @@ const App = () => {
         {/* users */}
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<RegisterForm />} />
-        <Route path="/customer-profile" element={<CustomerProfile />} />
+        <Route path="/customer-profile" element={
+          <AuthRoute>
+            <CustomerProfile />
+          </AuthRoute>
+        } />
       </Routes>
     </BrowserRouter>
   );

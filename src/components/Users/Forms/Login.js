@@ -30,12 +30,13 @@ const Login = () => {
 
   const { error, loading, userInfo } = useSelector((state) => state?.users?.userAuth);
   console.log(userInfo);
+
   //redirect
-  // if (userInfo?.userFound?.isAdmin) {
-  //   window.location.href = "/admin";
-  // } else {
-  //   window.location.href = "/customer-profile"
-  // }
+  useEffect(() => {
+    if (userInfo?.userFound) {
+      window.location.href = "/";
+    }
+  }, [userInfo]);
   
 
   return (
