@@ -3,9 +3,17 @@ import { Link } from "react-router-dom";
 import ErrorMsg from "../../ErrorMsg/ErrorMsg";
 import LoadingComponent from "../../LoadingComp/LoadingComponent";
 import NoDataFound from "../../NoDataFound/NoDataFound";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchCategoriesAction } from "../../../redux/slices/categories/categoriesSlices";
+import { useEffect } from "react";
 
 export default function ManageCategories() {
-  const { categories, loading, error } = {};
+ //dispatch
+ const dispatch = useDispatch();
+ useEffect(() => {
+   dispatch(fetchCategoriesAction());
+ }, [dispatch]);
+ const {categories: { categories },loading,error,} = useSelector((state) => state?.categories);
 
   //delete category handler
   const deleteCategoryHandler = (id) => {};
@@ -52,18 +60,13 @@ export default function ManageCategories() {
                         scope="col"
                         className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
                         No. Products
-                      </th>
-                      <th
-                        scope="col"
-                        className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
-                        Added By
-                      </th>
+                      </th>                      
                       <th
                         scope="col"
                         className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
                         Created At
                       </th>
-                      <th
+                      {/* <th
                         scope="col"
                         className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
                         Edit
@@ -72,7 +75,7 @@ export default function ManageCategories() {
                         scope="col"
                         className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
                         Delete
-                      </th>
+                      </th> */}
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-gray-200 bg-white">
@@ -99,16 +102,12 @@ export default function ManageCategories() {
                             {category?.products?.length}
                           </div>
                         </td>
-                        <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                          <span className="inline-flex rounded-full bg-green-100 px-2 text-xs font-semibold leading-5 text-green-800">
-                            {category?.user?.fullname}
-                          </span>
-                        </td>
+                      
                         <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                           {new Date(category?.createdAt).toLocaleDateString()}
                         </td>
                         {/* edit icon */}
-                        <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-left text-sm font-medium sm:pr-6">
+                        {/* <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-left text-sm font-medium sm:pr-6">
                           <Link
                             to={`/admin/edit-category/${category?._id}`}
                             state={{
@@ -131,9 +130,9 @@ export default function ManageCategories() {
 
                             <span className="sr-only">, {category?.name}</span>
                           </Link>
-                        </td>
+                        </td> */}
                         {/* delete icon */}
-                        <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-left text-sm font-medium sm:pr-6">
+                        {/* <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-left text-sm font-medium sm:pr-6">
                           <button
                             onClick={() => deleteCategoryHandler(category?._id)}
                             className="text-indigo-600 hover:text-indigo-900">
@@ -151,7 +150,7 @@ export default function ManageCategories() {
                               />
                             </svg>
                           </button>
-                        </td>
+                        </td> */}
                       </tr>
                     ))}
                   </tbody>

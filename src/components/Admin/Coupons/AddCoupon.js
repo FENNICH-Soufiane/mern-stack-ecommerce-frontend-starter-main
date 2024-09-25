@@ -6,10 +6,12 @@ import ErrorMsg from "../../ErrorMsg/ErrorMsg";
 import SuccessMsg from "../../SuccessMsg/SuccessMsg";
 import { createCouponAction } from "../../../redux/slices/coupons/CouponSlice";
 import { useDispatch, useSelector } from "react-redux";
-import { resetSuccessAction } from "../../../redux/slices/users/globalActions/globalActions";
+import { resetErrAction, resetSuccessAction } from "../../../redux/slices/users/globalActions/globalActions";
 import { resetIsAdded } from "../../../redux/slices/coupons/CouponSlice";
+import { useNavigate } from "react-router-dom";
 
 export default function AddCoupon() {
+  const navigate = useNavigate();
   // dispatch
   const dispatch = useDispatch();
 
@@ -17,7 +19,7 @@ export default function AddCoupon() {
     // Réinitialiser isAdded dès qu'on arrive sur la page
     dispatch(resetSuccessAction());
   }, []);
-  
+
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
 
@@ -31,15 +33,17 @@ export default function AddCoupon() {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
   //---onHandleSubmit---
-  const onHandleSubmit = (e) => {
+  const onHandleSubmit = async (e) => {
     e.preventDefault();
+
     dispatch(createCouponAction({
-      discount:formData?.discount,
+      discount: formData?.discount,
       code: formData?.code,
       startDate,
       endDate
-    }))
-    
+    }));
+
+    // navigate('/admin/manage-coupon')
     //reset form
     setFormData({
       code: "",
@@ -49,7 +53,7 @@ export default function AddCoupon() {
   //---coupon from store---
   const { loading, isAdded, error, coupon } = useSelector(state => state?.coupons);
 
-  
+
 
 
   return (
