@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import AdminDashboard from "./components/Admin/AdminDashboard";
 import ManageCoupons from "./components/Admin/Coupons/ManageCoupons";
@@ -35,11 +35,21 @@ import ThanksForOrdering from "./components/Users/Products/ThanksForOrdering";
 import ProductUpdate from "./components/Admin/Products/ProductUpdate";
 import UpdateOrders from "./components/Admin/Orders/UpdateOrders";
 import ColorsList from "./components/Admin/Categories/ColorsList";
+import { getUserProfileAction } from "./redux/slices/users/userSlice";
+import { useDispatch, useSelector } from "react-redux";
 
 const App = () => {
+  //dispatch
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(getUserProfileAction());
+  }, [dispatch]);
+  //get user from store
+  const { userAuth } = useSelector((state) => state?.users);
+  const isAdmin = userAuth?.userInfo?.userFound?.isAdmin ? true : false;
   return (
     <BrowserRouter>
-      <Navbar />
+      {!isAdmin && <Navbar />}
       {/* hide navbar if admin */}
       <Routes>
         {/* nested route */}
