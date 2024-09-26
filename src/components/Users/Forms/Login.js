@@ -3,9 +3,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { loginUserAction } from "../../../redux/slices/users/userSlice";
 import ErrorMsg from "../../ErrorMsg/ErrorMsg";
 import LoadingComponent from "../../LoadingComp/LoadingComponent";
+import { useNavigate } from "react-router-dom";
 
 
 const Login = () => {
+
+  const navigate = useNavigate();
 
   const dispatch = useDispatch();
 
@@ -25,7 +28,9 @@ const Login = () => {
     e.preventDefault();
     console.log(email);
     console.log(password);
-    dispatch(loginUserAction({ email, password }))
+    dispatch(loginUserAction({ email, password }));
+    navigate('/');
+    
   };
 
   const { error, loading, userInfo } = useSelector((state) => state?.users?.userAuth);
