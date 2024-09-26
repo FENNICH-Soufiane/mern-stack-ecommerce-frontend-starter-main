@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ErrorComponent from "../../ErrorMsg/ErrorMsg";
 import { useDispatch, useSelector } from "react-redux";
 import { registerUserAction } from "../../../redux/slices/users/userSlice";
@@ -30,11 +30,14 @@ const RegisterForm = () => {
   //select store data
 
   //select store data
-  const { user, error, loading } = useSelector((state) => state?.users)
+  const { user, error, loading } = useSelector((state) => state?.users);
+
   //redirect
-  if(user) {
-    window.location.href = "/login";
-  }
+  useEffect(() => {
+    if(user) {
+      window.location.href = "/login";
+    }
+  }, [user]);
 
   return (
     <>

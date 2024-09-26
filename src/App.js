@@ -41,6 +41,7 @@ import AuthRoute from "./components/AuthRoute/AuthRoute";
 
 
 const App = () => {
+
   return (
     <BrowserRouter>
       <Navbar />
